@@ -13,8 +13,6 @@ final class MatchesViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let contentStack: UIStackView = {
         let sv = UIStackView()
-        sv.axis = .vertical
-        sv.spacing = 0
         return sv
     }()
 
@@ -37,6 +35,8 @@ final class MatchesViewController: UIViewController {
 
     private func styleViews() {
         view.backgroundColor = AppColors.surface
+        contentStack.axis = .vertical
+        contentStack.spacing = 0
     }
 
     private func setupConstraints() {

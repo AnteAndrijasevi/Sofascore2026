@@ -18,7 +18,8 @@
 		EF189F862F60496D008CA689 /* LeagueHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF189F852F604967008CA689 /* LeagueHeaderView.swift */; };
 		EF189F882F604983008CA689 /* MatchRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF189F872F60497E008CA689 /* MatchRowView.swift */; };
 		EF189F8A2F6055ED008CA689 /* MatchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF189F892F6055E6008CA689 /* MatchesViewController.swift */; };
-		EF8760EC2F6437350076D62D /* UIImageView+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8760EB2F64372C0076D62D /* UIImageView+Convenience.swift */; };
+		EF8760EC2F6437350076D62D /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8760EB2F64372C0076D62D /* UIImageView+.swift */; };
+		EF8760EE2F6454740076D62D /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8760ED2F64546F0076D62D /* UIColor+.swift */; };
 		EF944EC12F5B0A8000EA1C14 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = EF944EC02F5B0A8000EA1C14 /* SnapKit */; };
 		EF944EC42F6043EC00EA1C14 /* SofaAcademic in Frameworks */ = {isa = PBXBuildFile; productRef = EF944EC32F6043EC00EA1C14 /* SofaAcademic */; };
 /* End PBXBuildFile section */
@@ -36,7 +37,8 @@
 		EF189F852F604967008CA689 /* LeagueHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeagueHeaderView.swift; sourceTree = "<group>"; };
 		EF189F872F60497E008CA689 /* MatchRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchRowView.swift; sourceTree = "<group>"; };
 		EF189F892F6055E6008CA689 /* MatchesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesViewController.swift; sourceTree = "<group>"; };
-		EF8760EB2F64372C0076D62D /* UIImageView+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Convenience.swift"; sourceTree = "<group>"; };
+		EF8760EB2F64372C0076D62D /* UIImageView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+.swift"; sourceTree = "<group>"; };
+		EF8760ED2F64546F0076D62D /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		EF944EA22F578DDF00EA1C14 /* Sofascore2026.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sofascore2026.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -56,7 +58,7 @@
 		EF189F6F2F6047F5008CA689 /* Sofascore2026 */ = {
 			isa = PBXGroup;
 			children = (
-				EF8760EA2F6437150076D62D /* Extenstions */,
+				EF8760EA2F6437150076D62D /* Extensions */,
 				EF189F7A2F604821008CA689 /* Controller */,
 				EF189F792F60481B008CA689 /* View */,
 				EF189F782F604812008CA689 /* ViewModel */,
@@ -105,12 +107,13 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		EF8760EA2F6437150076D62D /* Extenstions */ = {
+		EF8760EA2F6437150076D62D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				EF8760EB2F64372C0076D62D /* UIImageView+Convenience.swift */,
+				EF8760ED2F64546F0076D62D /* UIColor+.swift */,
+				EF8760EB2F64372C0076D62D /* UIImageView+.swift */,
 			);
-			path = Extenstions;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		EF944E992F578DDF00EA1C14 = {
@@ -212,12 +215,13 @@
 				EF189F742F6047F5008CA689 /* SceneDelegate.swift in Sources */,
 				EF189F862F60496D008CA689 /* LeagueHeaderView.swift in Sources */,
 				EF189F7E2F6048BD008CA689 /* Fonts.swift in Sources */,
+				EF8760EE2F6454740076D62D /* UIColor+.swift in Sources */,
 				EF189F8A2F6055ED008CA689 /* MatchesViewController.swift in Sources */,
 				EF189F842F60493B008CA689 /* MatchRowViewModel.swift in Sources */,
 				EF189F7C2F604841008CA689 /* Colors.swift in Sources */,
 				EF189F752F6047F5008CA689 /* AppDelegate.swift in Sources */,
 				EF189F802F6048E0008CA689 /* Strings.swift in Sources */,
-				EF8760EC2F6437350076D62D /* UIImageView+Convenience.swift in Sources */,
+				EF8760EC2F6437350076D62D /* UIImageView+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

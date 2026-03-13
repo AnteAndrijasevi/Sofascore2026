@@ -6,44 +6,16 @@ final class MatchRowView: UIView {
     private enum Constants {
         static let logoSize: CGFloat = 16
         static let scoreLabelWidth: CGFloat = 20
-        static let separatorWidth: CGFloat = 1
         static let separatorHeight: CGFloat = 40
         static let timeStackWidth: CGFloat = 40
         static let timeStackLeading: CGFloat = 4
         static let spacing: CGFloat = 8
-        static let teamsSpacing: CGFloat = 4
     }
 
-    private let timeLabel: UILabel = {
-        let label = UILabel()
-        label.font = AppFonts.caption
-        label.textColor = AppColors.secondaryText
-        label.textAlignment = .center
-        return label
-    }()
-
-    private let statusLabel: UILabel = {
-        let label = UILabel()
-        label.font = AppFonts.caption
-        label.textColor = AppColors.secondaryText
-        label.textAlignment = .center
-        return label
-    }()
-
-    private let timeStackView: UIStackView = {
-        let sv = UIStackView()
-        sv.axis = .vertical
-        sv.spacing = 2
-        sv.alignment = .center
-        sv.distribution = .fillEqually
-        return sv
-    }()
-
-    private let separator: UIView = {
-        let view = UIView()
-        view.backgroundColor = AppColors.separator
-        return view
-    }()
+    private let timeLabel = UILabel()
+    private let statusLabel = UILabel()
+    private let timeStackView = UIStackView()
+    private let separator = UIView()
 
     private let homeLogoImageView = MatchRowView.makeTeamLogo()
     private let awayLogoImageView = MatchRowView.makeTeamLogo()
@@ -52,29 +24,9 @@ final class MatchRowView: UIView {
     private let homeScoreLabel = MatchRowView.makeScoreLabel()
     private let awayScoreLabel = MatchRowView.makeScoreLabel()
 
-    private let homeRowStack: UIStackView = {
-        let sv = UIStackView()
-        sv.axis = .horizontal
-        sv.spacing = 8
-        sv.alignment = .center
-        return sv
-    }()
-
-    private let awayRowStack: UIStackView = {
-        let sv = UIStackView()
-        sv.axis = .horizontal
-        sv.spacing = 8
-        sv.alignment = .center
-        return sv
-    }()
-
-    private let teamsStackView: UIStackView = {
-        let sv = UIStackView()
-        sv.axis = .vertical
-        sv.spacing = 4
-        sv.distribution = .fillEqually
-        return sv
-    }()
+    private let homeRowStack = UIStackView()
+    private let awayRowStack = UIStackView()
+    private let teamsStackView = UIStackView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -114,8 +66,15 @@ final class MatchRowView: UIView {
     }
 
     private func addViews() {
+        addSubview(timeStackView)
+        addSubview(separator)
+        addSubview(teamsStackView)
+
         timeStackView.addArrangedSubview(timeLabel)
         timeStackView.addArrangedSubview(statusLabel)
+
+        teamsStackView.addArrangedSubview(homeRowStack)
+        teamsStackView.addArrangedSubview(awayRowStack)
 
         homeRowStack.addArrangedSubview(homeLogoImageView)
         homeRowStack.addArrangedSubview(homeNameLabel)
@@ -124,17 +83,37 @@ final class MatchRowView: UIView {
         awayRowStack.addArrangedSubview(awayLogoImageView)
         awayRowStack.addArrangedSubview(awayNameLabel)
         awayRowStack.addArrangedSubview(awayScoreLabel)
-
-        teamsStackView.addArrangedSubview(homeRowStack)
-        teamsStackView.addArrangedSubview(awayRowStack)
-
-        addSubview(timeStackView)
-        addSubview(separator)
-        addSubview(teamsStackView)
     }
 
     private func styleViews() {
         backgroundColor = AppColors.surface
+
+        timeLabel.font = AppFonts.caption
+        timeLabel.textColor = AppColors.secondaryText
+        timeLabel.textAlignment = .center
+
+        statusLabel.font = AppFonts.caption
+        statusLabel.textColor = AppColors.secondaryText
+        statusLabel.textAlignment = .center
+
+        timeStackView.axis = .vertical
+        timeStackView.spacing = 2
+        timeStackView.alignment = .center
+        timeStackView.distribution = .fillEqually
+
+        separator.backgroundColor = AppColors.separator
+
+        homeRowStack.axis = .horizontal
+        homeRowStack.spacing = Constants.spacing
+        homeRowStack.alignment = .center
+
+        awayRowStack.axis = .horizontal
+        awayRowStack.spacing = Constants.spacing
+        awayRowStack.alignment = .center
+
+        teamsStackView.axis = .vertical
+        teamsStackView.spacing = 4
+        teamsStackView.distribution = .fillEqually
     }
 
     private func setupConstraints() {
@@ -147,7 +126,7 @@ final class MatchRowView: UIView {
         separator.snp.makeConstraints {
             $0.leading.equalTo(timeStackView.snp.trailing).offset(Constants.spacing)
             $0.centerY.equalToSuperview()
-            $0.width.equalTo(Constants.separatorWidth)
+            $0.width.equalTo(1)
             $0.height.equalTo(Constants.separatorHeight)
         }
 

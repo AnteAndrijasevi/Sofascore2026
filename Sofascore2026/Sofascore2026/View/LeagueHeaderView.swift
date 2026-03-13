@@ -6,39 +6,13 @@ final class LeagueHeaderView: UIView {
     private enum Constants {
         static let logoSize: CGFloat = 32
         static let horizontalPadding: CGFloat = 16
-
     }
 
-    private let logoImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
-        iv.clipsToBounds = true
-        return iv
-    }()
-
-    private let countryLabel: UILabel = {
-        let label = UILabel()
-        label.font = AppFonts.headline
-        label.textColor = AppColors.primaryText
-        return label
-    }()
-
+    private let logoImageView = UIImageView()
+    private let countryLabel = UILabel()
     private let arrowImageView = UIImageView(named: "ic_pointer_right")
-
-    private let leagueNameLabel: UILabel = {
-        let label = UILabel()
-        label.font = AppFonts.body
-        label.textColor = AppColors.secondaryText
-        return label
-    }()
-
-    private let textStackView: UIStackView = {
-        let sv = UIStackView()
-        sv.axis = .horizontal
-        sv.spacing = 4
-        sv.alignment = .center
-        return sv
-    }()
+    private let leagueNameLabel = UILabel()
+    private let textStackView = UIStackView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -56,15 +30,28 @@ final class LeagueHeaderView: UIView {
     }
 
     private func addViews() {
+        addSubview(logoImageView)
+        addSubview(textStackView)
         textStackView.addArrangedSubview(countryLabel)
         textStackView.addArrangedSubview(arrowImageView)
         textStackView.addArrangedSubview(leagueNameLabel)
-        addSubview(logoImageView)
-        addSubview(textStackView)
     }
 
     private func styleViews() {
         backgroundColor = AppColors.surface
+
+        logoImageView.contentMode = .scaleAspectFit
+        logoImageView.clipsToBounds = true
+
+        countryLabel.font = AppFonts.headline
+        countryLabel.textColor = AppColors.primaryText
+
+        leagueNameLabel.font = AppFonts.body
+        leagueNameLabel.textColor = AppColors.secondaryText
+
+        textStackView.axis = .horizontal
+        textStackView.spacing = 4
+        textStackView.alignment = .center
     }
 
     private func setupConstraints() {

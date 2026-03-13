@@ -1,10 +1,3 @@
-//
-//  SceneDelegate.swift
-//  Sofascore2026
-//
-//  Created by Ante Andrijašević on 03/03/2026.
-//
-
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {

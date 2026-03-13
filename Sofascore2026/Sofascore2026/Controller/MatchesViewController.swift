@@ -1,15 +1,13 @@
-//
-//  MatchesViewController.swift
-//  Sofascore2026
-//
-//  Created by Ante Andrijašević on 10/03/2026.
-//
-
 import UIKit
 import SnapKit
 import SofaAcademic
 
 final class MatchesViewController: UIViewController {
+
+    private enum Constants {
+        static let headerHeight: CGFloat = 56
+        static let rowHeight: CGFloat = 56
+    }
 
     private let dataSource = Homework2DataSource()
     private let scrollView = UIScrollView()
@@ -27,11 +25,21 @@ final class MatchesViewController: UIViewController {
     }
 
     private func setupUI() {
-        view.backgroundColor = AppColors.surface
+        addViews()
+        styleViews()
+        setupConstraints()
+    }
 
+    private func addViews() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentStack)
+    }
 
+    private func styleViews() {
+        view.backgroundColor = AppColors.surface
+    }
+
+    private func setupConstraints() {
         scrollView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
@@ -48,26 +56,22 @@ final class MatchesViewController: UIViewController {
 
         let headerViewModel = LeagueHeaderViewModel(league: league)
         let headerView = LeagueHeaderView()
-        headerView.configure(with: headerViewModel)
-        headerView.snp.makeConstraints {
-            $0.height.equalTo(56)
-        }
+        headerView.snp.makeConstraints { $0.height.equalTo(Constants.headerHeight) }
         contentStack.addArrangedSubview(headerView)
 
+        headerViewModel.fetchImage {
+            headerView.configure(with: headerViewModel)
+        }
 
         for event in events {
             let rowViewModel = MatchRowViewModel(event: event)
             let rowView = MatchRowView()
-            rowView.configure(with: rowViewModel)
-            rowView.snp.makeConstraints {
-                $0.height.equalTo(56)
-            }
+            rowView.snp.makeConstraints { $0.height.equalTo(Constants.rowHeight) }
             contentStack.addArrangedSubview(rowView)
-        
 
-
+            rowViewModel.fetchImages {
+                rowView.configure(with: rowViewModel)
+            }
         }
     }
-
-
 }

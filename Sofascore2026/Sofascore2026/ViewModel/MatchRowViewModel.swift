@@ -1,14 +1,8 @@
-//
-//  MatchRowViewModel.swift
-//  Sofascore2026
-//
-//  Created by Ante Andrijašević on 10/03/2026.
-//
-
+import UIKit
 import SofaAcademic
 import Foundation
 
-struct MatchRowViewModel {
+final class MatchRowViewModel {
     let homeTeamName: String
     let awayTeamName: String
     let homeTeamLogoUrl: String?
@@ -19,7 +13,15 @@ struct MatchRowViewModel {
     let statusLine: String
     let isLive: Bool
     let homeWon: Bool?
-    let awayWon: Bool?
+    let isDraw: Bool?
+    var homeTeamLogo: UIImage?
+    var awayTeamLogo: UIImage?
+
+    private static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        return formatter
+    }()
 
     init(event: Event) {
         self.homeTeamName = event.homeTeam.name
@@ -30,19 +32,19 @@ struct MatchRowViewModel {
         switch event.status {
         case .finished:
             self.timeOrStatus = Self.formattedTime(from: event.startTimestamp)
-            self.statusLine = "FT"
+            self.statusLine = AppStrings.fullTime
             self.isLive = false
         case .inProgress:
             self.timeOrStatus = Self.formattedTime(from: event.startTimestamp)
-            self.statusLine = "36'" 
+            self.statusLine = "36'"
             self.isLive = true
         case .halftime:
             self.timeOrStatus = Self.formattedTime(from: event.startTimestamp)
-            self.statusLine = "HT"
+            self.statusLine = AppStrings.halfTime
             self.isLive = true
         case .notStarted:
             self.timeOrStatus = Self.formattedTime(from: event.startTimestamp)
-            self.statusLine = "-"
+            self.statusLine = AppStrings.notStarted
             self.isLive = false
         }
 
@@ -50,19 +52,41 @@ struct MatchRowViewModel {
             self.homeScore = "\(home)"
             self.awayScore = "\(away)"
             self.homeWon = home > away
-            self.awayWon = away > home
+            self.isDraw = home == away
         } else {
             self.homeScore = nil
             self.awayScore = nil
             self.homeWon = nil
-            self.awayWon = nil
+            self.isDraw = nil
+        }
+    }
+
+    func fetchImages(completion: @escaping () -> Void) {
+        let group = DispatchGroup()
+
+        if let urlString = homeTeamLogoUrl, let url = URL(string: urlString) {
+            group.enter()
+            URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
+                if let data = data { self?.homeTeamLogo = UIImage(data: data) }
+                group.leave()
+            }.resume()
+        }
+
+        if let urlString = awayTeamLogoUrl, let url = URL(string: urlString) {
+            group.enter()
+            URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
+                if let data = data { self?.awayTeamLogo = UIImage(data: data) }
+                group.leave()
+            }.resume()
+        }
+
+        group.notify(queue: .main) {
+            completion()
         }
     }
 
     private static func formattedTime(from timestamp: Int) -> String {
         let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        return formatter.string(from: date)
+        return dateFormatter.string(from: date)
     }
 }

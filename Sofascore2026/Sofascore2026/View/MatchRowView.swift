@@ -1,21 +1,24 @@
-//
-//  MatchRowView.swift
-//  Sofascore2026
-//
-//  Created by Ante Andrijašević on 10/03/2026.
-//
-
 import UIKit
 import SnapKit
 
 final class MatchRowView: UIView {
+
+    private enum Constants {
+        static let logoSize: CGFloat = 16
+        static let scoreLabelWidth: CGFloat = 20
+        static let separatorWidth: CGFloat = 1
+        static let separatorHeight: CGFloat = 40
+        static let timeStackWidth: CGFloat = 40
+        static let timeStackLeading: CGFloat = 4
+        static let spacing: CGFloat = 8
+        static let teamsSpacing: CGFloat = 4
+    }
 
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.font = AppFonts.caption
         label.textColor = AppColors.secondaryText
         label.textAlignment = .center
-        label.numberOfLines = 1
         return label
     }()
 
@@ -24,7 +27,6 @@ final class MatchRowView: UIView {
         label.font = AppFonts.caption
         label.textColor = AppColors.secondaryText
         label.textAlignment = .center
-        label.numberOfLines = 1
         return label
     }()
 
@@ -39,16 +41,14 @@ final class MatchRowView: UIView {
 
     private let separator: UIView = {
         let view = UIView()
-        view.backgroundColor = AppColors.secondaryText.withAlphaComponent(0.3)
+        view.backgroundColor = AppColors.separator
         return view
     }()
 
     private let homeLogoImageView = MatchRowView.makeTeamLogo()
     private let awayLogoImageView = MatchRowView.makeTeamLogo()
-
     private let homeNameLabel = MatchRowView.makeTeamNameLabel()
     private let awayNameLabel = MatchRowView.makeTeamNameLabel()
-
     private let homeScoreLabel = MatchRowView.makeScoreLabel()
     private let awayScoreLabel = MatchRowView.makeScoreLabel()
 
@@ -96,7 +96,6 @@ final class MatchRowView: UIView {
         let label = UILabel()
         label.font = AppFonts.body
         label.textColor = AppColors.primaryText
-        label.numberOfLines = 1
         return label
     }
 
@@ -105,13 +104,16 @@ final class MatchRowView: UIView {
         label.font = AppFonts.body
         label.textColor = AppColors.primaryText
         label.textAlignment = .right
-        label.numberOfLines = 1
         return label
     }
 
     private func setupUI() {
-        backgroundColor = AppColors.surface
+        addViews()
+        styleViews()
+        setupConstraints()
+    }
 
+    private func addViews() {
         timeStackView.addArrangedSubview(timeLabel)
         timeStackView.addArrangedSubview(statusLabel)
 
@@ -129,77 +131,72 @@ final class MatchRowView: UIView {
         addSubview(timeStackView)
         addSubview(separator)
         addSubview(teamsStackView)
+    }
 
+    private func styleViews() {
+        backgroundColor = AppColors.surface
+    }
+
+    private func setupConstraints() {
         timeStackView.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(4)
+            $0.leading.equalToSuperview().offset(Constants.timeStackLeading)
             $0.centerY.equalToSuperview()
-            $0.width.equalTo(40)
+            $0.width.equalTo(Constants.timeStackWidth)
         }
 
         separator.snp.makeConstraints {
-            $0.leading.equalTo(timeStackView.snp.trailing).offset(8)
+            $0.leading.equalTo(timeStackView.snp.trailing).offset(Constants.spacing)
             $0.centerY.equalToSuperview()
-            $0.width.equalTo(1)
-            $0.height.equalTo(40)
+            $0.width.equalTo(Constants.separatorWidth)
+            $0.height.equalTo(Constants.separatorHeight)
         }
 
         teamsStackView.snp.makeConstraints {
-            $0.leading.equalTo(separator.snp.trailing).offset(8)
-            $0.trailing.equalToSuperview().offset(-8)
+            $0.leading.equalTo(separator.snp.trailing).offset(Constants.spacing)
+            $0.trailing.equalToSuperview().offset(-Constants.spacing)
             $0.centerY.equalToSuperview()
         }
 
         homeLogoImageView.snp.makeConstraints {
-            $0.width.height.equalTo(16)
+            $0.size.equalTo(Constants.logoSize)
         }
 
         awayLogoImageView.snp.makeConstraints {
-            $0.width.height.equalTo(16)
+            $0.size.equalTo(Constants.logoSize)
         }
 
         homeScoreLabel.snp.makeConstraints {
-            $0.width.equalTo(20)
+            $0.width.equalTo(Constants.scoreLabelWidth)
         }
 
         awayScoreLabel.snp.makeConstraints {
-            $0.width.equalTo(20)
+            $0.width.equalTo(Constants.scoreLabelWidth)
         }
     }
 
     func configure(with viewModel: MatchRowViewModel) {
         timeLabel.text = viewModel.timeOrStatus
         statusLabel.text = viewModel.statusLine
-
-        if viewModel.isLive {
-            statusLabel.textColor = AppColors.liveRed
-        } else {
-            statusLabel.textColor = AppColors.secondaryText
-        }
+        statusLabel.textColor = viewModel.isLive ? AppColors.liveRed : AppColors.secondaryText
 
         homeNameLabel.text = viewModel.homeTeamName
         awayNameLabel.text = viewModel.awayTeamName
-
         homeScoreLabel.text = viewModel.homeScore
         awayScoreLabel.text = viewModel.awayScore
 
-        if let homeWon = viewModel.homeWon {
+        homeLogoImageView.image = viewModel.homeTeamLogo
+        awayLogoImageView.image = viewModel.awayTeamLogo
+
+        if let isDraw = viewModel.isDraw, isDraw {
+            homeNameLabel.textColor = AppColors.primaryText
+            homeScoreLabel.textColor = AppColors.primaryText
+            awayNameLabel.textColor = AppColors.primaryText
+            awayScoreLabel.textColor = AppColors.primaryText
+        } else if let homeWon = viewModel.homeWon {
             homeNameLabel.textColor = homeWon ? AppColors.primaryText : AppColors.secondaryText
             homeScoreLabel.textColor = homeWon ? AppColors.primaryText : AppColors.secondaryText
             awayNameLabel.textColor = homeWon ? AppColors.secondaryText : AppColors.primaryText
             awayScoreLabel.textColor = homeWon ? AppColors.secondaryText : AppColors.primaryText
         }
-
-        loadImage(from: viewModel.homeTeamLogoUrl, into: homeLogoImageView)
-        loadImage(from: viewModel.awayTeamLogoUrl, into: awayLogoImageView)
-    }
-
-    private func loadImage(from urlString: String?, into imageView: UIImageView) {
-        guard let urlString = urlString, let url = URL(string: urlString) else { return }
-        URLSession.shared.dataTask(with: url) { [weak imageView] data, _, _ in
-            guard let data = data, let image = UIImage(data: data) else { return }
-            DispatchQueue.main.async {
-                imageView?.image = image
-            }
-        }.resume()
     }
 }

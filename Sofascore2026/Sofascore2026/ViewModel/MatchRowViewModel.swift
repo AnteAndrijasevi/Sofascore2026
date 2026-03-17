@@ -17,12 +17,6 @@ final class MatchRowViewModel {
     var homeTeamLogo: UIImage?
     var awayTeamLogo: UIImage?
 
-    private static let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        return formatter
-    }()
-
     init(event: Event) {
         self.homeTeamName = event.homeTeam.name
         self.awayTeamName = event.awayTeam.name
@@ -31,19 +25,19 @@ final class MatchRowViewModel {
 
         switch event.status {
         case .finished:
-            self.timeOrStatus = Self.formattedTime(from: event.startTimestamp)
+            self.timeOrStatus = MatchesHelper.formattedTime(from: event.startTimestamp)
             self.statusLine = AppStrings.fullTime
             self.isLive = false
         case .inProgress:
-            self.timeOrStatus = Self.formattedTime(from: event.startTimestamp)
+            self.timeOrStatus = MatchesHelper.formattedTime(from: event.startTimestamp)
             self.statusLine = "36'"
             self.isLive = true
         case .halftime:
-            self.timeOrStatus = Self.formattedTime(from: event.startTimestamp)
+            self.timeOrStatus = MatchesHelper.formattedTime(from: event.startTimestamp)
             self.statusLine = AppStrings.halfTime
             self.isLive = true
         case .notStarted:
-            self.timeOrStatus = Self.formattedTime(from: event.startTimestamp)
+            self.timeOrStatus = MatchesHelper.formattedTime(from: event.startTimestamp)
             self.statusLine = AppStrings.notStarted
             self.isLive = false
         }
@@ -79,14 +73,9 @@ final class MatchRowViewModel {
                 group.leave()
             }.resume()
         }
-
+        
         group.notify(queue: .main) {
             completion()
         }
-    }
-
-    private static func formattedTime(from timestamp: Int) -> String {
-        let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
-        return dateFormatter.string(from: date)
     }
 }

@@ -18,13 +18,9 @@ final class LeagueHeaderViewModel {
             completion()
             return
         }
-        URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
-            if let data = data {
-                self?.logoImage = UIImage(data: data)
-            }
-            DispatchQueue.main.async {
-                completion()
-            }
-        }.resume()
+        ImageService.fetchImage(from: url) { [weak self] image in
+            self?.logoImage = image
+            completion()
+        }
     }
 }

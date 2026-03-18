@@ -10,7 +10,7 @@ final class LeagueHeaderView: UIView {
 
     private let logoImageView = UIImageView()
     private let countryLabel = UILabel()
-    private let arrowImageView = UIImageView(named: "ic_pointer_right")
+    private let arrowImageView = UIImageView()
     private let leagueNameLabel = UILabel()
     private let textStackView = UIStackView()
 
@@ -52,6 +52,9 @@ final class LeagueHeaderView: UIView {
         textStackView.axis = .horizontal
         textStackView.spacing = 4
         textStackView.alignment = .center
+        
+        arrowImageView.image = UIImage(named: "ic_pointer_right")
+        arrowImageView.contentMode = .scaleAspectFit
     }
 
     private func setupConstraints() {

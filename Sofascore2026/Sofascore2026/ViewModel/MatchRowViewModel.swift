@@ -18,21 +18,18 @@ final class MatchRowViewModel {
 
     var homeTeamColor: UIColor {
         switch result {
-        case .homeWin: return AppColors.primaryText
         case .awayWin: return AppColors.secondaryText
-        case .draw: return AppColors.primaryText
-        case nil: return AppColors.primaryText
+        default: return AppColors.primaryText
         }
     }
 
     var awayTeamColor: UIColor {
         switch result {
         case .homeWin: return AppColors.secondaryText
-        case .awayWin: return AppColors.primaryText
-        case .draw: return AppColors.primaryText
-        case nil: return AppColors.primaryText
+        default: return AppColors.primaryText
         }
     }
+
     
     var statusLabelColor: UIColor {
         isLive ? AppColors.liveRed : AppColors.secondaryText

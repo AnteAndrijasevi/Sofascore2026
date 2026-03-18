@@ -1,5 +1,4 @@
 import UIKit
-import SofaAcademic
 
 final class LeagueHeaderViewModel {
     let logoUrl: String?
@@ -7,10 +6,10 @@ final class LeagueHeaderViewModel {
     let leagueName: String
     var logoImage: UIImage?
 
-    init(league: League) {
-        self.logoUrl = league.logoUrl
-        self.countryName = league.country?.name ?? ""
-        self.leagueName = league.name
+    init(countryName: String, leagueName: String, logoUrl: String?) {
+        self.logoUrl = logoUrl
+        self.countryName = countryName
+        self.leagueName = leagueName
     }
 
     func fetchImage(completion: @escaping () -> Void) {

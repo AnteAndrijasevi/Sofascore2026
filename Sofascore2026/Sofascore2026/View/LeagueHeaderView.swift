@@ -1,7 +1,9 @@
 import UIKit
 import SnapKit
 
-final class LeagueHeaderView: UIView {
+final class LeagueHeaderView: UITableViewHeaderFooterView {
+
+    static let identifier = "LeagueHeaderView"
 
     private enum Constants {
         static let logoSize: CGFloat = 32
@@ -14,8 +16,8 @@ final class LeagueHeaderView: UIView {
     private let leagueNameLabel = UILabel()
     private let textStackView = UIStackView()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
         setupUI()
     }
 
@@ -30,15 +32,15 @@ final class LeagueHeaderView: UIView {
     }
 
     private func addViews() {
-        addSubview(logoImageView)
-        addSubview(textStackView)
+        contentView.addSubview(logoImageView)
+        contentView.addSubview(textStackView)
         textStackView.addArrangedSubview(countryLabel)
         textStackView.addArrangedSubview(arrowImageView)
         textStackView.addArrangedSubview(leagueNameLabel)
     }
 
     private func styleViews() {
-        backgroundColor = AppColors.surface
+        contentView.backgroundColor = AppColors.surface
 
         logoImageView.contentMode = .scaleAspectFit
         logoImageView.clipsToBounds = true
@@ -52,8 +54,9 @@ final class LeagueHeaderView: UIView {
         textStackView.axis = .horizontal
         textStackView.spacing = 4
         textStackView.alignment = .center
-        
-        arrowImageView.image = UIImage(named: "ic_pointer_right")
+
+        arrowImageView.image = UIImage(named: AppStrings.icPointerRight)
+
         arrowImageView.contentMode = .scaleAspectFit
     }
 

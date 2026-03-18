@@ -27,6 +27,10 @@
 		EF944EC42F6043EC00EA1C14 /* SofaAcademic in Frameworks */ = {isa = PBXBuildFile; productRef = EF944EC32F6043EC00EA1C14 /* SofaAcademic */; };
 		EFCF777C2F6B0F5600D2DB6B /* MatchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFCF777B2F6B0F5200D2DB6B /* MatchResult.swift */; };
 		EFCF777F2F6B101100D2DB6B /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFCF777E2F6B101000D2DB6B /* ImageService.swift */; };
+		EFCF77812F6B1BCA00D2DB6B /* MatchesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFCF77802F6B1BC900D2DB6B /* MatchesSection.swift */; };
+		EFCF77832F6B1C9600D2DB6B /* Event+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFCF77822F6B1C9300D2DB6B /* Event+.swift */; };
+		EFCF77852F6B1D0A00D2DB6B /* MatchRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFCF77842F6B1D0800D2DB6B /* MatchRowCell.swift */; };
+		EFCF77872F6B1D9F00D2DB6B /* MatchesViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFCF77862F6B1D9E00D2DB6B /* MatchesViewController+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +54,10 @@
 		EF944EA22F578DDF00EA1C14 /* Sofascore2026.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sofascore2026.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFCF777B2F6B0F5200D2DB6B /* MatchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchResult.swift; sourceTree = "<group>"; };
 		EFCF777E2F6B101000D2DB6B /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
+		EFCF77802F6B1BC900D2DB6B /* MatchesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesSection.swift; sourceTree = "<group>"; };
+		EFCF77822F6B1C9300D2DB6B /* Event+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+.swift"; sourceTree = "<group>"; };
+		EFCF77842F6B1D0800D2DB6B /* MatchRowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchRowCell.swift; sourceTree = "<group>"; };
+		EFCF77862F6B1D9E00D2DB6B /* MatchesViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MatchesViewController+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +76,7 @@
 		EF189F6F2F6047F5008CA689 /* Sofascore2026 */ = {
 			isa = PBXGroup;
 			children = (
-				EFCF777D2F6B100400D2DB6B /* Service */,
+				EFCF777D2F6B100400D2DB6B /* Services */,
 				EF7765732F698A59006807A6 /* Model */,
 				EF7765702F697F76006807A6 /* Helpers */,
 				EF8760EA2F6437150076D62D /* Extensions */,
@@ -106,6 +114,7 @@
 		EF189F792F60481B008CA689 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				EFCF77842F6B1D0800D2DB6B /* MatchRowCell.swift */,
 				EF7765782F698D81006807A6 /* SportSelectorView.swift */,
 				EF7765762F698D37006807A6 /* SportSelectorItemView.swift */,
 				EF189F872F60497E008CA689 /* MatchRowView.swift */,
@@ -133,6 +142,7 @@
 		EF7765732F698A59006807A6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				EFCF77802F6B1BC900D2DB6B /* MatchesSection.swift */,
 				EFCF777B2F6B0F5200D2DB6B /* MatchResult.swift */,
 				EF7765742F698A62006807A6 /* Sport.swift */,
 			);
@@ -142,6 +152,8 @@
 		EF8760EA2F6437150076D62D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				EFCF77862F6B1D9E00D2DB6B /* MatchesViewController+.swift */,
+				EFCF77822F6B1C9300D2DB6B /* Event+.swift */,
 				EF8760ED2F64546F0076D62D /* UIColor+.swift */,
 			);
 			path = Extensions;
@@ -163,12 +175,12 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		EFCF777D2F6B100400D2DB6B /* Service */ = {
+		EFCF777D2F6B100400D2DB6B /* Services */ = {
 			isa = PBXGroup;
 			children = (
 				EFCF777E2F6B101000D2DB6B /* ImageService.swift */,
 			);
-			path = Service;
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -249,6 +261,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EFCF77832F6B1C9600D2DB6B /* Event+.swift in Sources */,
 				EF7765752F698A63006807A6 /* Sport.swift in Sources */,
 				EF189F822F604925008CA689 /* LeagueHeaderViewModel.swift in Sources */,
 				EF189F882F604983008CA689 /* MatchRowView.swift in Sources */,
@@ -257,7 +270,9 @@
 				EF189F7E2F6048BD008CA689 /* Fonts.swift in Sources */,
 				EF7765792F698D83006807A6 /* SportSelectorView.swift in Sources */,
 				EF7765772F698D39006807A6 /* SportSelectorItemView.swift in Sources */,
+				EFCF77872F6B1D9F00D2DB6B /* MatchesViewController+.swift in Sources */,
 				EF8760EE2F6454740076D62D /* UIColor+.swift in Sources */,
+				EFCF77852F6B1D0A00D2DB6B /* MatchRowCell.swift in Sources */,
 				EF189F8A2F6055ED008CA689 /* MatchesViewController.swift in Sources */,
 				EF7765722F697FAD006807A6 /* MatchesHelper.swift in Sources */,
 				EFCF777F2F6B101100D2DB6B /* ImageService.swift in Sources */,
@@ -266,6 +281,7 @@
 				EFCF777C2F6B0F5600D2DB6B /* MatchResult.swift in Sources */,
 				EF189F752F6047F5008CA689 /* AppDelegate.swift in Sources */,
 				EF189F802F6048E0008CA689 /* Strings.swift in Sources */,
+				EFCF77812F6B1BCA00D2DB6B /* MatchesSection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

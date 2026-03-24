@@ -26,8 +26,6 @@ final class SportSelectorItemView: UIButton {
     private func addViews() {
         addSubview(stackView)
         addSubview(selectorBar)
-        stackView.isUserInteractionEnabled = false
-        selectorBar.isUserInteractionEnabled = false
         stackView.addArrangedSubview(iconImageView)
         stackView.addArrangedSubview(sportTitleLabel)
     }
@@ -46,6 +44,9 @@ final class SportSelectorItemView: UIButton {
 
         selectorBar.backgroundColor = .clear
         selectorBar.layer.cornerRadius = 1
+        
+        stackView.isUserInteractionEnabled = false
+        selectorBar.isUserInteractionEnabled = false
     }
 
     private func setupConstraints() {

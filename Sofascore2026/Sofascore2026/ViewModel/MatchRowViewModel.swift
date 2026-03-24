@@ -1,6 +1,5 @@
 import UIKit
 import SofaAcademic
-import Foundation
 
 enum MatchResult {
     case homeWin

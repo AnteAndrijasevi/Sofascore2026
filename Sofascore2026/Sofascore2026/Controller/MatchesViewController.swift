@@ -14,7 +14,7 @@ final class MatchesViewController: UIViewController {
     })
     private let tableView = UITableView()
     private var selectedSport: Sport = .football
-    var diffableDataSource: DataSource?
+    private var diffableDataSource: DataSource?
 
     override func viewDidLoad() {
         super.viewDidLoad()

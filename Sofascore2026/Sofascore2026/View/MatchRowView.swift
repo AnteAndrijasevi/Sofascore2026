@@ -8,8 +8,8 @@ final class MatchRowView: UIView {
         static let scoreLabelWidth: CGFloat = 20
         static let separatorHeight: CGFloat = 40
         static let timeStackWidth: CGFloat = 40
-        static let timeStackLeading: CGFloat = 4
         static let spacing: CGFloat = 8
+        static let horizontalPadding: CGFloat = 16
     }
 
     private let timeLabel = UILabel()
@@ -116,7 +116,7 @@ final class MatchRowView: UIView {
 
     private func setupConstraints() {
         timeStackView.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(Constants.timeStackLeading)
+            $0.leading.equalToSuperview().offset(Constants.horizontalPadding)
             $0.centerY.equalToSuperview()
             $0.width.equalTo(Constants.timeStackWidth)
         }
@@ -129,8 +129,8 @@ final class MatchRowView: UIView {
         }
 
         teamsStackView.snp.makeConstraints {
-            $0.leading.equalTo(separator.snp.trailing).offset(Constants.spacing)
-            $0.trailing.equalToSuperview().offset(-Constants.spacing)
+            $0.leading.equalTo(separator.snp.trailing).offset(Constants.horizontalPadding)
+            $0.trailing.equalToSuperview().offset(-Constants.horizontalPadding)
             $0.centerY.equalToSuperview()
         }
 
@@ -163,9 +163,9 @@ final class MatchRowView: UIView {
         homeLogoImageView.image = viewModel.homeTeamLogo
         awayLogoImageView.image = viewModel.awayTeamLogo
 
-        homeNameLabel.textColor = viewModel.homeTeamColor
-        homeScoreLabel.textColor = viewModel.homeTeamColor
-        awayNameLabel.textColor = viewModel.awayTeamColor
-        awayScoreLabel.textColor = viewModel.awayTeamColor
+        homeNameLabel.textColor = viewModel.result?.homeTeamColor ?? AppColors.primaryText
+        homeScoreLabel.textColor = viewModel.result?.homeTeamColor ?? AppColors.primaryText
+        awayNameLabel.textColor = viewModel.result?.awayTeamColor ?? AppColors.primaryText
+        awayScoreLabel.textColor = viewModel.result?.awayTeamColor ?? AppColors.primaryText
     }
 }

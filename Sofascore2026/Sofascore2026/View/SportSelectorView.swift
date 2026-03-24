@@ -3,15 +3,16 @@ import SnapKit
 
 final class SportSelectorView: UIView {
 
-    var onSportSelected: ((Sport) -> Void)?
+    private let onSportSelected: (Sport) -> Void
     private var selectedSport: Sport = .football
     private let sports: [Sport] = [.football, .basketball, .americanFootball]
     private var itemViews: [SportSelectorItemView] = []
 
     private let stackView = UIStackView()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(onSportSelected: @escaping (Sport) -> Void) {
+        self.onSportSelected = onSportSelected
+        super.init(frame: .zero)
         setupUI()
     }
 
@@ -47,21 +48,20 @@ final class SportSelectorView: UIView {
         for sport in sports {
             let itemView = SportSelectorItemView()
             itemView.configure(with: sport, isSelected: sport == selectedSport)
-            let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-            itemView.addGestureRecognizer(tap)
+            itemView.addTarget(self, action: #selector(handleTap(_:)), for: .touchUpInside)
             itemViews.append(itemView)
             stackView.addArrangedSubview(itemView)
         }
     }
 
-    @objc private func handleTap(_ gesture: UITapGestureRecognizer) {
-        guard let tappedView = gesture.view as? SportSelectorItemView,
+    @objc private func handleTap(_ sender: UIControl) {
+        guard let tappedView = sender as? SportSelectorItemView,
               let index = itemViews.firstIndex(where: { $0 === tappedView }) else { return }
         let sport = sports[index]
         guard sport != selectedSport else { return }
         selectedSport = sport
         updateSelection()
-        onSportSelected?(sport)
+        onSportSelected(sport)
     }
 
     private func updateSelection() {

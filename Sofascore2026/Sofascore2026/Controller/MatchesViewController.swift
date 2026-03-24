@@ -4,17 +4,14 @@ import SofaAcademic
 
 final class MatchesViewController: UIViewController {
 
-    private enum Constants {
-        static let headerHeight: CGFloat = 56
-        static let rowHeight: CGFloat = 56
-        static let sportSelectorHeight: CGFloat = 56
-    }
-
     typealias DataSource = UITableViewDiffableDataSource<MatchesSection, Event>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<MatchesSection, Event>
 
     private let dataSource = Homework3DataSource()
-    private let sportSelectorView = SportSelectorView()
+    private lazy var sportSelectorView = SportSelectorView(onSportSelected: { [weak self] sport in
+        self?.selectedSport = sport
+        self?.applySnapshot()
+    })
     private let tableView = UITableView()
     private var selectedSport: Sport = .football
     var diffableDataSource: DataSource?
@@ -30,7 +27,6 @@ final class MatchesViewController: UIViewController {
         addViews()
         styleViews()
         setupConstraints()
-        setupActions()
     }
 
     private func addViews() {
@@ -42,8 +38,8 @@ final class MatchesViewController: UIViewController {
         view.backgroundColor = AppColors.surface
         tableView.separatorStyle = .none
         tableView.backgroundColor = AppColors.surface
-        tableView.rowHeight = Constants.rowHeight
-        tableView.sectionHeaderHeight = Constants.headerHeight
+        tableView.rowHeight = 56
+        tableView.sectionHeaderHeight = 56
         tableView.register(MatchRowCell.self, forCellReuseIdentifier: MatchRowCell.identifier)
         tableView.register(LeagueHeaderView.self, forHeaderFooterViewReuseIdentifier: LeagueHeaderView.identifier)
         tableView.delegate = self
@@ -52,19 +48,12 @@ final class MatchesViewController: UIViewController {
     private func setupConstraints() {
         sportSelectorView.snp.makeConstraints {
             $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-            $0.height.equalTo(Constants.sportSelectorHeight)
+            $0.height.equalTo(56)
         }
 
         tableView.snp.makeConstraints {
             $0.top.equalTo(sportSelectorView.snp.bottom)
             $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
-        }
-    }
-
-    private func setupActions() {
-        sportSelectorView.onSportSelected = { [weak self] sport in
-            self?.selectedSport = sport
-            self?.applySnapshot()
         }
     }
 
@@ -113,5 +102,30 @@ final class MatchesViewController: UIViewController {
         }
 
         diffableDataSource?.apply(snapshot, animatingDifferences: true)
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension MatchesViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let header = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: LeagueHeaderView.identifier
+        ) as? LeagueHeaderView else { return nil }
+
+        guard let sectionIdentifier = diffableDataSource?.snapshot().sectionIdentifiers[section] else { return nil }
+
+        let viewModel = LeagueHeaderViewModel(
+            countryName: sectionIdentifier.countryName,
+            leagueName: sectionIdentifier.leagueName,
+            logoUrl: sectionIdentifier.logoUrl
+        )
+        viewModel.fetchImage {
+            header.configure(with: viewModel)
+        }
+
+        header.showSeparator(section != 0)
+
+        return header
     }
 }

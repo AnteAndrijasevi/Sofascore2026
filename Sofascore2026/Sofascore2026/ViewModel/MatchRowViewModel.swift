@@ -2,6 +2,26 @@ import UIKit
 import SofaAcademic
 import Foundation
 
+enum MatchResult {
+    case homeWin
+    case awayWin
+    case draw
+
+    var homeTeamColor: UIColor {
+        switch self {
+        case .awayWin: return AppColors.secondaryText
+        case .homeWin, .draw: return AppColors.primaryText
+        }
+    }
+
+    var awayTeamColor: UIColor {
+        switch self {
+        case .homeWin: return AppColors.secondaryText
+        case .awayWin, .draw: return AppColors.primaryText
+        }
+    }
+}
+
 final class MatchRowViewModel {
     let homeTeamName: String
     let awayTeamName: String
@@ -16,21 +36,6 @@ final class MatchRowViewModel {
     var homeTeamLogo: UIImage?
     var awayTeamLogo: UIImage?
 
-    var homeTeamColor: UIColor {
-        switch result {
-        case .awayWin: return AppColors.secondaryText
-        default: return AppColors.primaryText
-        }
-    }
-
-    var awayTeamColor: UIColor {
-        switch result {
-        case .homeWin: return AppColors.secondaryText
-        default: return AppColors.primaryText
-        }
-    }
-
-    
     var statusLabelColor: UIColor {
         isLive ? AppColors.liveRed : AppColors.secondaryText
     }

@@ -1,16 +1,10 @@
 import UIKit
 import SnapKit
 
-final class SportSelectorItemView: UIView {
-
-    private enum Constants {
-        static let iconSize: CGFloat = 24
-        static let selectorHeight: CGFloat = 2
-        static let verticalPadding: CGFloat = 8
-    }
+final class SportSelectorItemView: UIButton {
 
     private let iconImageView = UIImageView()
-    private let titleLabel = UILabel()
+    private let sportTitleLabel = UILabel()
     private let selectorBar = UIView()
     private let stackView = UIStackView()
 
@@ -32,17 +26,19 @@ final class SportSelectorItemView: UIView {
     private func addViews() {
         addSubview(stackView)
         addSubview(selectorBar)
+        stackView.isUserInteractionEnabled = false
+        selectorBar.isUserInteractionEnabled = false
         stackView.addArrangedSubview(iconImageView)
-        stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(sportTitleLabel)
     }
 
     private func styleViews() {
-        titleLabel.font = AppFonts.headline
-        titleLabel.textColor = AppColors.onPrimary
-        iconImageView.tintColor = AppColors.onPrimary
-        titleLabel.textAlignment = .center
+        sportTitleLabel.font = AppFonts.headline
+        sportTitleLabel.textColor = AppColors.onPrimary
+        sportTitleLabel.textAlignment = .center
 
         iconImageView.contentMode = .scaleAspectFit
+        iconImageView.tintColor = AppColors.onPrimary
 
         stackView.axis = .vertical
         stackView.spacing = 4
@@ -54,23 +50,24 @@ final class SportSelectorItemView: UIView {
 
     private func setupConstraints() {
         stackView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(Constants.verticalPadding)
+            $0.top.equalToSuperview().offset(8)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(selectorBar.snp.top).offset(-Constants.verticalPadding)
+            $0.bottom.equalTo(selectorBar.snp.top).offset(-8)
         }
 
         iconImageView.snp.makeConstraints {
-            $0.size.equalTo(Constants.iconSize)
+            $0.size.equalTo(16)
         }
 
         selectorBar.snp.makeConstraints {
-            $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(Constants.selectorHeight)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(2)
+            $0.height.equalTo(4)
         }
     }
 
     func configure(with sport: Sport, isSelected: Bool) {
-        titleLabel.text = sport.title
+        sportTitleLabel.text = sport.title
         iconImageView.image = UIImage(named: sport.iconName)
         selectorBar.backgroundColor = isSelected ? AppColors.onPrimary : .clear
     }

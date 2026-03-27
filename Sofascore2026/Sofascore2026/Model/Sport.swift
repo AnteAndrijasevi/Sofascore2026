@@ -1,0 +1,23 @@
+import Foundation
+
+enum Sport {
+    case football
+    case basketball
+    case americanFootball
+
+    var title: String {
+        switch self {
+        case .football: return AppStrings.football
+        case .basketball: return AppStrings.basketball
+        case .americanFootball: return AppStrings.americanFootball
+        }
+    }
+
+    var iconName: String {
+        switch self {
+        case .football: return "ic_football"
+        case .basketball: return "ic_basketball"
+        case .americanFootball: return "ic_american_football"
+        }
+    }
+}

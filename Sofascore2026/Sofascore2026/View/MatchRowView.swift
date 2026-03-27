@@ -8,8 +8,8 @@ final class MatchRowView: UIView {
         static let scoreLabelWidth: CGFloat = 20
         static let separatorHeight: CGFloat = 40
         static let timeStackWidth: CGFloat = 40
-        static let timeStackLeading: CGFloat = 4
         static let spacing: CGFloat = 8
+        static let horizontalPadding: CGFloat = 16
     }
 
     private let timeLabel = UILabel()
@@ -17,12 +17,12 @@ final class MatchRowView: UIView {
     private let timeStackView = UIStackView()
     private let separator = UIView()
 
-    private let homeLogoImageView = MatchRowView.makeTeamLogo()
-    private let awayLogoImageView = MatchRowView.makeTeamLogo()
-    private let homeNameLabel = MatchRowView.makeTeamNameLabel()
-    private let awayNameLabel = MatchRowView.makeTeamNameLabel()
-    private let homeScoreLabel = MatchRowView.makeScoreLabel()
-    private let awayScoreLabel = MatchRowView.makeScoreLabel()
+    private let homeLogoImageView = UIImageView()
+    private let awayLogoImageView = UIImageView()
+    private let homeNameLabel = UILabel()
+    private let awayNameLabel = UILabel()
+    private let homeScoreLabel = UILabel()
+    private let awayScoreLabel = UILabel()
 
     private let homeRowStack = UIStackView()
     private let awayRowStack = UIStackView()
@@ -35,28 +35,6 @@ final class MatchRowView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    private static func makeTeamLogo() -> UIImageView {
-        let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
-        iv.clipsToBounds = true
-        return iv
-    }
-
-    private static func makeTeamNameLabel() -> UILabel {
-        let label = UILabel()
-        label.font = AppFonts.body
-        label.textColor = AppColors.primaryText
-        return label
-    }
-
-    private static func makeScoreLabel() -> UILabel {
-        let label = UILabel()
-        label.font = AppFonts.body
-        label.textColor = AppColors.primaryText
-        label.textAlignment = .right
-        return label
     }
 
     private func setupUI() {
@@ -103,6 +81,26 @@ final class MatchRowView: UIView {
 
         separator.backgroundColor = AppColors.separator
 
+        homeLogoImageView.contentMode = .scaleAspectFit
+        homeLogoImageView.clipsToBounds = true
+
+        awayLogoImageView.contentMode = .scaleAspectFit
+        awayLogoImageView.clipsToBounds = true
+
+        homeNameLabel.font = AppFonts.body
+        homeNameLabel.textColor = AppColors.primaryText
+
+        awayNameLabel.font = AppFonts.body
+        awayNameLabel.textColor = AppColors.primaryText
+
+        homeScoreLabel.font = AppFonts.body
+        homeScoreLabel.textColor = AppColors.primaryText
+        homeScoreLabel.textAlignment = .right
+
+        awayScoreLabel.font = AppFonts.body
+        awayScoreLabel.textColor = AppColors.primaryText
+        awayScoreLabel.textAlignment = .right
+
         homeRowStack.axis = .horizontal
         homeRowStack.spacing = Constants.spacing
         homeRowStack.alignment = .center
@@ -118,7 +116,7 @@ final class MatchRowView: UIView {
 
     private func setupConstraints() {
         timeStackView.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(Constants.timeStackLeading)
+            $0.leading.equalToSuperview().offset(Constants.horizontalPadding)
             $0.centerY.equalToSuperview()
             $0.width.equalTo(Constants.timeStackWidth)
         }
@@ -131,8 +129,8 @@ final class MatchRowView: UIView {
         }
 
         teamsStackView.snp.makeConstraints {
-            $0.leading.equalTo(separator.snp.trailing).offset(Constants.spacing)
-            $0.trailing.equalToSuperview().offset(-Constants.spacing)
+            $0.leading.equalTo(separator.snp.trailing).offset(Constants.horizontalPadding)
+            $0.trailing.equalToSuperview().offset(-Constants.horizontalPadding)
             $0.centerY.equalToSuperview()
         }
 
@@ -156,8 +154,7 @@ final class MatchRowView: UIView {
     func configure(with viewModel: MatchRowViewModel) {
         timeLabel.text = viewModel.timeOrStatus
         statusLabel.text = viewModel.statusLine
-        statusLabel.textColor = viewModel.isLive ? AppColors.liveRed : AppColors.secondaryText
-
+        statusLabel.textColor = viewModel.statusLabelColor
         homeNameLabel.text = viewModel.homeTeamName
         awayNameLabel.text = viewModel.awayTeamName
         homeScoreLabel.text = viewModel.homeScore
@@ -166,16 +163,9 @@ final class MatchRowView: UIView {
         homeLogoImageView.image = viewModel.homeTeamLogo
         awayLogoImageView.image = viewModel.awayTeamLogo
 
-        if let isDraw = viewModel.isDraw, isDraw {
-            homeNameLabel.textColor = AppColors.primaryText
-            homeScoreLabel.textColor = AppColors.primaryText
-            awayNameLabel.textColor = AppColors.primaryText
-            awayScoreLabel.textColor = AppColors.primaryText
-        } else if let homeWon = viewModel.homeWon {
-            homeNameLabel.textColor = homeWon ? AppColors.primaryText : AppColors.secondaryText
-            homeScoreLabel.textColor = homeWon ? AppColors.primaryText : AppColors.secondaryText
-            awayNameLabel.textColor = homeWon ? AppColors.secondaryText : AppColors.primaryText
-            awayScoreLabel.textColor = homeWon ? AppColors.secondaryText : AppColors.primaryText
-        }
+        homeNameLabel.textColor = viewModel.result?.homeTeamColor ?? AppColors.primaryText
+        homeScoreLabel.textColor = viewModel.result?.homeTeamColor ?? AppColors.primaryText
+        awayNameLabel.textColor = viewModel.result?.awayTeamColor ?? AppColors.primaryText
+        awayScoreLabel.textColor = viewModel.result?.awayTeamColor ?? AppColors.primaryText
     }
 }

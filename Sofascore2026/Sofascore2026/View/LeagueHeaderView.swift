@@ -1,21 +1,24 @@
 import UIKit
 import SnapKit
 
-final class LeagueHeaderView: UIView {
+final class LeagueHeaderView: UITableViewHeaderFooterView {
+
+    static let identifier = "LeagueHeaderView"
 
     private enum Constants {
         static let logoSize: CGFloat = 32
         static let horizontalPadding: CGFloat = 16
     }
 
+    private let topSeparator = UIView()
     private let logoImageView = UIImageView()
     private let countryLabel = UILabel()
-    private let arrowImageView = UIImageView(named: "ic_pointer_right")
+    private let arrowImageView = UIImageView()
     private let leagueNameLabel = UILabel()
     private let textStackView = UIStackView()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
         setupUI()
     }
 
@@ -30,15 +33,17 @@ final class LeagueHeaderView: UIView {
     }
 
     private func addViews() {
-        addSubview(logoImageView)
-        addSubview(textStackView)
+        contentView.addSubview(topSeparator)
+        contentView.addSubview(logoImageView)
+        contentView.addSubview(textStackView)
         textStackView.addArrangedSubview(countryLabel)
         textStackView.addArrangedSubview(arrowImageView)
         textStackView.addArrangedSubview(leagueNameLabel)
     }
 
     private func styleViews() {
-        backgroundColor = AppColors.surface
+        contentView.backgroundColor = AppColors.surface
+        topSeparator.backgroundColor = AppColors.separator
 
         logoImageView.contentMode = .scaleAspectFit
         logoImageView.clipsToBounds = true
@@ -52,6 +57,9 @@ final class LeagueHeaderView: UIView {
         textStackView.axis = .horizontal
         textStackView.spacing = 4
         textStackView.alignment = .center
+
+        arrowImageView.image = UIImage(named: AppStrings.icPointerRight)
+        arrowImageView.contentMode = .scaleAspectFit
     }
 
     private func setupConstraints() {
@@ -66,6 +74,16 @@ final class LeagueHeaderView: UIView {
             $0.centerY.equalToSuperview()
             $0.trailing.lessThanOrEqualToSuperview().offset(-Constants.horizontalPadding)
         }
+        
+        topSeparator.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalToSuperview().offset(-8)
+            $0.height.equalTo(1)
+        }
+    }
+
+    func showSeparator(_ show: Bool) {
+        topSeparator.isHidden = !show
     }
 
     func configure(with viewModel: LeagueHeaderViewModel) {

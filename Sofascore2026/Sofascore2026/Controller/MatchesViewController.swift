@@ -4,22 +4,23 @@ import SofaAcademic
 
 final class MatchesViewController: UIViewController {
 
-    private enum Constants {
-        static let headerHeight: CGFloat = 56
-        static let rowHeight: CGFloat = 56
-    }
+    typealias DataSource = UITableViewDiffableDataSource<MatchesSection, Event>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<MatchesSection, Event>
 
-    private let dataSource = Homework2DataSource()
-    private let scrollView = UIScrollView()
-    private let contentStack: UIStackView = {
-        let sv = UIStackView()
-        return sv
-    }()
+    private let dataSource = Homework3DataSource()
+    private lazy var sportSelectorView = SportSelectorView(onSportSelected: { [weak self] sport in
+        self?.selectedSport = sport
+        self?.applySnapshot()
+    })
+    private let tableView = UITableView()
+    private var selectedSport: Sport = .football
+    private var diffableDataSource: DataSource?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        populateData()
+        configureDataSource()
+        applySnapshot()
     }
 
     private func setupUI() {
@@ -29,49 +30,102 @@ final class MatchesViewController: UIViewController {
     }
 
     private func addViews() {
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentStack)
+        view.addSubview(sportSelectorView)
+        view.addSubview(tableView)
     }
 
     private func styleViews() {
         view.backgroundColor = AppColors.surface
-        contentStack.axis = .vertical
-        contentStack.spacing = 0
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = AppColors.surface
+        tableView.rowHeight = 56
+        tableView.sectionHeaderHeight = 56
+        tableView.register(MatchRowCell.self, forCellReuseIdentifier: MatchRowCell.identifier)
+        tableView.register(LeagueHeaderView.self, forHeaderFooterViewReuseIdentifier: LeagueHeaderView.identifier)
+        tableView.delegate = self
     }
 
     private func setupConstraints() {
-        scrollView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
+        sportSelectorView.snp.makeConstraints {
+            $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            $0.height.equalTo(56)
         }
 
-        contentStack.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-            $0.width.equalTo(scrollView)
+        tableView.snp.makeConstraints {
+            $0.top.equalTo(sportSelectorView.snp.bottom)
+            $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
 
-    private func populateData() {
-        let league = dataSource.laLigaLeague()
-        let events = dataSource.laLigaEvents()
+    private func configureDataSource() {
+        diffableDataSource = DataSource(tableView: tableView) { (tableView: UITableView, indexPath: IndexPath, event: Event) in
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: MatchRowCell.identifier,
+                for: indexPath
+            ) as? MatchRowCell else { return UITableViewCell() }
 
-        let headerViewModel = LeagueHeaderViewModel(league: league)
-        let headerView = LeagueHeaderView()
-        headerView.snp.makeConstraints { $0.height.equalTo(Constants.headerHeight) }
-        contentStack.addArrangedSubview(headerView)
-
-        headerViewModel.fetchImage {
-            headerView.configure(with: headerViewModel)
-        }
-
-        for event in events {
-            let rowViewModel = MatchRowViewModel(event: event)
-            let rowView = MatchRowView()
-            rowView.snp.makeConstraints { $0.height.equalTo(Constants.rowHeight) }
-            contentStack.addArrangedSubview(rowView)
-
-            rowViewModel.fetchImages {
-                rowView.configure(with: rowViewModel)
+            let viewModel = MatchRowViewModel(event: event)
+            viewModel.fetchImages {
+                cell.configure(with: viewModel)
             }
+            return cell
         }
+    }
+
+    private func applySnapshot() {
+        let allEvents = dataSource.events()
+        let filteredEvents: [Event]
+
+        switch selectedSport {
+        case .football:
+            filteredEvents = allEvents
+        case .basketball, .americanFootball:
+            filteredEvents = []
+        }
+
+        var seenLeagueIds = Set<Int>()
+        var orderedLeagues: [League] = []
+
+        for event in filteredEvents {
+            guard let league = event.league, !seenLeagueIds.contains(league.id) else { continue }
+            seenLeagueIds.insert(league.id)
+            orderedLeagues.append(league)
+        }
+
+        var snapshot = Snapshot()
+
+        for league in orderedLeagues {
+            let section = MatchesSection(league: league)
+            let leagueEvents = filteredEvents.filter { $0.league?.id == league.id }
+            snapshot.appendSections([section])
+            snapshot.appendItems(leagueEvents, toSection: section)
+        }
+
+        diffableDataSource?.apply(snapshot, animatingDifferences: true)
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension MatchesViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let header = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: LeagueHeaderView.identifier
+        ) as? LeagueHeaderView else { return nil }
+
+        guard let sectionIdentifier = diffableDataSource?.snapshot().sectionIdentifiers[section] else { return nil }
+
+        let viewModel = LeagueHeaderViewModel(
+            countryName: sectionIdentifier.countryName,
+            leagueName: sectionIdentifier.leagueName,
+            logoUrl: sectionIdentifier.logoUrl
+        )
+        viewModel.fetchImage {
+            header.configure(with: viewModel)
+        }
+
+        header.showSeparator(section != 0)
+
+        return header
     }
 }

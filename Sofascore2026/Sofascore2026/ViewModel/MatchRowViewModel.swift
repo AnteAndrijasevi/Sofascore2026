@@ -1,6 +1,25 @@
 import UIKit
 import SofaAcademic
-import Foundation
+
+enum MatchResult {
+    case homeWin
+    case awayWin
+    case draw
+
+    var homeTeamColor: UIColor {
+        switch self {
+        case .awayWin: return AppColors.secondaryText
+        case .homeWin, .draw: return AppColors.primaryText
+        }
+    }
+
+    var awayTeamColor: UIColor {
+        switch self {
+        case .homeWin: return AppColors.secondaryText
+        case .awayWin, .draw: return AppColors.primaryText
+        }
+    }
+}
 
 final class MatchRowViewModel {
     let homeTeamName: String
@@ -12,10 +31,13 @@ final class MatchRowViewModel {
     let timeOrStatus: String
     let statusLine: String
     let isLive: Bool
-    let homeWon: Bool?
-    let isDraw: Bool?
+    let result: MatchResult?
     var homeTeamLogo: UIImage?
     var awayTeamLogo: UIImage?
+
+    var statusLabelColor: UIColor {
+        isLive ? AppColors.liveRed : AppColors.secondaryText
+    }
 
     init(event: Event) {
         self.homeTeamName = event.homeTeam.name
@@ -30,7 +52,7 @@ final class MatchRowViewModel {
             self.isLive = false
         case .inProgress:
             self.timeOrStatus = MatchesHelper.formattedTime(from: event.startTimestamp)
-            self.statusLine = "36'"
+            self.statusLine = AppStrings.inProgressPlaceholder
             self.isLive = true
         case .halftime:
             self.timeOrStatus = MatchesHelper.formattedTime(from: event.startTimestamp)
@@ -45,13 +67,17 @@ final class MatchRowViewModel {
         if let home = event.homeScore, let away = event.awayScore {
             self.homeScore = "\(home)"
             self.awayScore = "\(away)"
-            self.homeWon = home > away
-            self.isDraw = home == away
+            if home > away {
+                self.result = .homeWin
+            } else if away > home {
+                self.result = .awayWin
+            } else {
+                self.result = .draw
+            }
         } else {
             self.homeScore = nil
             self.awayScore = nil
-            self.homeWon = nil
-            self.isDraw = nil
+            self.result = nil
         }
     }
 
@@ -60,20 +86,20 @@ final class MatchRowViewModel {
 
         if let urlString = homeTeamLogoUrl, let url = URL(string: urlString) {
             group.enter()
-            URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
-                if let data = data { self?.homeTeamLogo = UIImage(data: data) }
+            ImageService.fetchImage(from: url) { [weak self] image in
+                self?.homeTeamLogo = image
                 group.leave()
-            }.resume()
+            }
         }
 
         if let urlString = awayTeamLogoUrl, let url = URL(string: urlString) {
             group.enter()
-            URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
-                if let data = data { self?.awayTeamLogo = UIImage(data: data) }
+            ImageService.fetchImage(from: url) { [weak self] image in
+                self?.awayTeamLogo = image
                 group.leave()
-            }.resume()
+            }
         }
-        
+
         group.notify(queue: .main) {
             completion()
         }

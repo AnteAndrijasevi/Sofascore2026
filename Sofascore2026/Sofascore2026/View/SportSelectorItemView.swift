@@ -42,7 +42,7 @@ final class SportSelectorItemView: UIButton {
         stackView.spacing = 4
         stackView.alignment = .center
 
-        selectorBar.backgroundColor = .clear
+        selectorBar.backgroundColor = AppColors.clear
         selectorBar.layer.cornerRadius = 1
         
         stackView.isUserInteractionEnabled = false
@@ -70,6 +70,6 @@ final class SportSelectorItemView: UIButton {
     func configure(with sport: Sport, isSelected: Bool) {
         sportTitleLabel.text = sport.title
         iconImageView.image = UIImage(named: sport.iconName)
-        selectorBar.backgroundColor = isSelected ? AppColors.onPrimary : .clear
+        selectorBar.backgroundColor = isSelected ? AppColors.onPrimary : AppColors.clear
     }
 }

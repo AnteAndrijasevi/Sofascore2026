@@ -3,6 +3,10 @@ import SnapKit
 
 final class SportSelectorItemView: UIButton {
 
+    private enum Constants {
+        static let iconSize: CGFloat = 16
+    }
+
     private let iconImageView = UIImageView()
     private let sportTitleLabel = UILabel()
     private let selectorBar = UIView()
@@ -42,9 +46,8 @@ final class SportSelectorItemView: UIButton {
         stackView.spacing = 4
         stackView.alignment = .center
 
-        selectorBar.backgroundColor = .clear
+        selectorBar.backgroundColor = AppColors.clear
         selectorBar.layer.cornerRadius = 1
-        
         stackView.isUserInteractionEnabled = false
         selectorBar.isUserInteractionEnabled = false
     }
@@ -57,7 +60,7 @@ final class SportSelectorItemView: UIButton {
         }
 
         iconImageView.snp.makeConstraints {
-            $0.size.equalTo(16)
+            $0.size.equalTo(Constants.iconSize)
         }
 
         selectorBar.snp.makeConstraints {
@@ -70,6 +73,6 @@ final class SportSelectorItemView: UIButton {
     func configure(with sport: Sport, isSelected: Bool) {
         sportTitleLabel.text = sport.title
         iconImageView.image = UIImage(named: sport.iconName)
-        selectorBar.backgroundColor = isSelected ? AppColors.onPrimary : .clear
+        selectorBar.backgroundColor = isSelected ? AppColors.onPrimary : AppColors.clear
     }
 }

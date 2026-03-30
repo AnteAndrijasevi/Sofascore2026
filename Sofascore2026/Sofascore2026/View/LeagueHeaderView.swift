@@ -8,6 +8,7 @@ final class LeagueHeaderView: UITableViewHeaderFooterView {
     private enum Constants {
         static let logoSize: CGFloat = 32
         static let horizontalPadding: CGFloat = 16
+        static let separatorOverlap: CGFloat = 8
     }
 
     private let topSeparator = UIView()
@@ -77,7 +78,7 @@ final class LeagueHeaderView: UITableViewHeaderFooterView {
         
         topSeparator.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
-            $0.top.equalToSuperview().offset(-8)
+            $0.top.equalToSuperview().offset(-Constants.separatorOverlap)
             $0.height.equalTo(1)
         }
     }

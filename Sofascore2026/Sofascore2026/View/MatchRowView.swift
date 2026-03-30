@@ -154,7 +154,7 @@ final class MatchRowView: UIView {
     func configure(with viewModel: MatchRowViewModel) {
         timeLabel.text = viewModel.timeOrStatus
         statusLabel.text = viewModel.statusLine
-        statusLabel.textColor = viewModel.statusLabelColor
+        statusLabel.textColor = viewModel.statusTextColor
         homeNameLabel.text = viewModel.homeTeamName
         awayNameLabel.text = viewModel.awayTeamName
         homeScoreLabel.text = viewModel.homeScore
@@ -163,9 +163,9 @@ final class MatchRowView: UIView {
         homeLogoImageView.image = viewModel.homeTeamLogo
         awayLogoImageView.image = viewModel.awayTeamLogo
 
-        homeNameLabel.textColor = viewModel.result?.homeTeamColor ?? AppColors.primaryText
-        homeScoreLabel.textColor = viewModel.result?.homeTeamColor ?? AppColors.primaryText
-        awayNameLabel.textColor = viewModel.result?.awayTeamColor ?? AppColors.primaryText
-        awayScoreLabel.textColor = viewModel.result?.awayTeamColor ?? AppColors.primaryText
+        homeNameLabel.textColor = viewModel.homeTeamTextColor
+        homeScoreLabel.textColor = viewModel.homeScoreTextColor
+        awayNameLabel.textColor = viewModel.awayTeamTextColor
+        awayScoreLabel.textColor = viewModel.awayScoreTextColor
     }
 }

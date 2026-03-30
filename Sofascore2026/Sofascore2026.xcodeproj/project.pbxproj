@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3259998CF68E499BBD7161A9 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1129F0AF616A49428DB981D2 /* SettingsViewController.swift */; };
+		73078BD66C7849F99363500B /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9885914B33F40ACAB4D678E /* HeaderView.swift */; };
+		A562AB698FA44D328D491028 /* EventDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2658214CF6E847F59DAEF2F3 /* EventDetailsViewController.swift */; };
 		EF189F712F6047F5008CA689 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF189F672F6047F5008CA689 /* Assets.xcassets */; };
 		EF189F742F6047F5008CA689 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF189F6D2F6047F5008CA689 /* SceneDelegate.swift */; };
 		EF189F752F6047F5008CA689 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF189F662F6047F5008CA689 /* AppDelegate.swift */; };
@@ -25,13 +28,20 @@
 		EF8760EE2F6454740076D62D /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8760ED2F64546F0076D62D /* UIColor+.swift */; };
 		EF944EC12F5B0A8000EA1C14 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = EF944EC02F5B0A8000EA1C14 /* SnapKit */; };
 		EF944EC42F6043EC00EA1C14 /* SofaAcademic in Frameworks */ = {isa = PBXBuildFile; productRef = EF944EC32F6043EC00EA1C14 /* SofaAcademic */; };
+		EFBC72662F7A895D006E602A /* MatchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFBC72652F7A895D006E602A /* MatchResult.swift */; };
 		EFCF777F2F6B101100D2DB6B /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFCF777E2F6B101000D2DB6B /* ImageService.swift */; };
 		EFCF77812F6B1BCA00D2DB6B /* MatchesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFCF77802F6B1BC900D2DB6B /* MatchesSection.swift */; };
 		EFCF77832F6B1C9600D2DB6B /* Event+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFCF77822F6B1C9300D2DB6B /* Event+.swift */; };
 		EFCF77852F6B1D0A00D2DB6B /* MatchRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFCF77842F6B1D0800D2DB6B /* MatchRowCell.swift */; };
+		EFFE56CE2F753CF200CE4366 /* EventDetailsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFFE56CD2F753CE700CE4366 /* EventDetailsHelper.swift */; };
+		F0B08AC6FE944FB48C819D30 /* EventDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158547F6E08F494EB37500CB /* EventDetailsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1129F0AF616A49428DB981D2 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		158547F6E08F494EB37500CB /* EventDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsViewModel.swift; sourceTree = "<group>"; };
+		2658214CF6E847F59DAEF2F3 /* EventDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsViewController.swift; sourceTree = "<group>"; };
+		B9885914B33F40ACAB4D678E /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		EF189F662F6047F5008CA689 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EF189F672F6047F5008CA689 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EF189F682F6047F5008CA689 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -50,10 +60,12 @@
 		EF7765782F698D81006807A6 /* SportSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportSelectorView.swift; sourceTree = "<group>"; };
 		EF8760ED2F64546F0076D62D /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		EF944EA22F578DDF00EA1C14 /* Sofascore2026.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sofascore2026.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFBC72652F7A895D006E602A /* MatchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchResult.swift; sourceTree = "<group>"; };
 		EFCF777E2F6B101000D2DB6B /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
 		EFCF77802F6B1BC900D2DB6B /* MatchesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesSection.swift; sourceTree = "<group>"; };
 		EFCF77822F6B1C9300D2DB6B /* Event+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+.swift"; sourceTree = "<group>"; };
 		EFCF77842F6B1D0800D2DB6B /* MatchRowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchRowCell.swift; sourceTree = "<group>"; };
+		EFFE56CD2F753CE700CE4366 /* EventDetailsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				EF189F832F604934008CA689 /* MatchRowViewModel.swift */,
+				158547F6E08F494EB37500CB /* EventDetailsViewModel.swift */,
 				EF189F812F60491C008CA689 /* LeagueHeaderViewModel.swift */,
 			);
 			path = ViewModel;
@@ -111,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				EFCF77842F6B1D0800D2DB6B /* MatchRowCell.swift */,
+				B9885914B33F40ACAB4D678E /* HeaderView.swift */,
 				EF7765782F698D81006807A6 /* SportSelectorView.swift */,
 				EF7765762F698D37006807A6 /* SportSelectorItemView.swift */,
 				EF189F872F60497E008CA689 /* MatchRowView.swift */,
@@ -123,6 +137,8 @@
 			isa = PBXGroup;
 			children = (
 				EF189F892F6055E6008CA689 /* MatchesViewController.swift */,
+				1129F0AF616A49428DB981D2 /* SettingsViewController.swift */,
+				2658214CF6E847F59DAEF2F3 /* EventDetailsViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -130,6 +146,7 @@
 		EF7765702F697F76006807A6 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				EFFE56CD2F753CE700CE4366 /* EventDetailsHelper.swift */,
 				EF7765712F697FA2006807A6 /* MatchesHelper.swift */,
 			);
 			path = Helpers;
@@ -140,6 +157,7 @@
 			children = (
 				EFCF77802F6B1BC900D2DB6B /* MatchesSection.swift */,
 				EF7765742F698A62006807A6 /* Sport.swift */,
+				EFBC72652F7A895D006E602A /* MatchResult.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -264,8 +282,13 @@
 				EF189F7E2F6048BD008CA689 /* Fonts.swift in Sources */,
 				EF7765792F698D83006807A6 /* SportSelectorView.swift in Sources */,
 				EF7765772F698D39006807A6 /* SportSelectorItemView.swift in Sources */,
+				EFBC72662F7A895D006E602A /* MatchResult.swift in Sources */,
 				EF8760EE2F6454740076D62D /* UIColor+.swift in Sources */,
 				EFCF77852F6B1D0A00D2DB6B /* MatchRowCell.swift in Sources */,
+				73078BD66C7849F99363500B /* HeaderView.swift in Sources */,
+				3259998CF68E499BBD7161A9 /* SettingsViewController.swift in Sources */,
+				F0B08AC6FE944FB48C819D30 /* EventDetailsViewModel.swift in Sources */,
+				A562AB698FA44D328D491028 /* EventDetailsViewController.swift in Sources */,
 				EF189F8A2F6055ED008CA689 /* MatchesViewController.swift in Sources */,
 				EF7765722F697FAD006807A6 /* MatchesHelper.swift in Sources */,
 				EFCF777F2F6B101100D2DB6B /* ImageService.swift in Sources */,
@@ -274,6 +297,7 @@
 				EF189F752F6047F5008CA689 /* AppDelegate.swift in Sources */,
 				EF189F802F6048E0008CA689 /* Strings.swift in Sources */,
 				EFCF77812F6B1BCA00D2DB6B /* MatchesSection.swift in Sources */,
+				EFFE56CE2F753CF200CE4366 /* EventDetailsHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

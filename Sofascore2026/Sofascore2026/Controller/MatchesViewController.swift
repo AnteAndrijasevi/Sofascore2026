@@ -8,21 +8,12 @@ final class MatchesViewController: UIViewController {
     private typealias Snapshot = NSDiffableDataSourceSnapshot<MatchesSection, Event>
 
     private enum Constants {
-        static let headerHeight: CGFloat = 56
-        static let sportSelectorHeight: CGFloat = 56
+        static let sectionHeaderHeight: CGFloat = 56
     }
 
     private let dataSource = Homework3DataSource()
-    private lazy var headerView = HeaderView(onSettingsTapped: { [weak self] in
-        let settingsVC = SettingsViewController()
-        let navController = UINavigationController(rootViewController: settingsVC)
-        navController.modalPresentationStyle = .fullScreen
-        self?.present(navController, animated: true)
-    })
-    private lazy var sportSelectorView = SportSelectorView(onSportSelected: { [weak self] sport in
-        self?.selectedSport = sport
-        self?.applySnapshot()
-    })
+    private lazy var headerView = HeaderView(onSettingsTapped: handleSettingsTapped)
+    private lazy var sportSelectorView = SportSelectorView(onSportSelected: handleSportSelected)
     private let tableView = UITableView()
     private var selectedSport: Sport = .football
     private var diffableDataSource: DataSource?
@@ -56,8 +47,8 @@ final class MatchesViewController: UIViewController {
         view.backgroundColor = AppColors.primary
         tableView.separatorStyle = .none
         tableView.backgroundColor = AppColors.surface
-        tableView.rowHeight = Constants.headerHeight
-        tableView.sectionHeaderHeight = Constants.headerHeight
+        tableView.rowHeight = 56
+        tableView.sectionHeaderHeight = Constants.sectionHeaderHeight
         tableView.register(MatchRowCell.self, forCellReuseIdentifier: MatchRowCell.identifier)
         tableView.register(LeagueHeaderView.self, forHeaderFooterViewReuseIdentifier: LeagueHeaderView.identifier)
     }
@@ -70,13 +61,13 @@ final class MatchesViewController: UIViewController {
         headerView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(Constants.headerHeight)
+            $0.height.equalTo(Constants.sectionHeaderHeight)
         }
 
         sportSelectorView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(Constants.sportSelectorHeight)
+            $0.height.equalTo(56)
         }
 
         tableView.snp.makeConstraints {
@@ -84,6 +75,18 @@ final class MatchesViewController: UIViewController {
             $0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             $0.bottom.equalToSuperview()
         }
+    }
+
+    private func handleSettingsTapped() {
+        let settingsVC = SettingsViewController()
+        let navController = UINavigationController(rootViewController: settingsVC)
+        navController.modalPresentationStyle = .fullScreen
+        present(navController, animated: true)
+    }
+
+    private func handleSportSelected(_ sport: Sport) {
+        selectedSport = sport
+        applySnapshot()
     }
 
     private func configureDataSource() {
@@ -94,7 +97,8 @@ final class MatchesViewController: UIViewController {
             ) as? MatchRowCell else { return UITableViewCell() }
 
             let viewModel = MatchRowViewModel(event: event)
-            viewModel.fetchImages {
+            viewModel.fetchImages { [weak cell] in
+                guard let cell else { return }
                 cell.configure(with: viewModel)
             }
             return cell
@@ -149,7 +153,8 @@ extension MatchesViewController: UITableViewDelegate {
             leagueName: sectionIdentifier.leagueName,
             logoUrl: sectionIdentifier.logoUrl
         )
-        viewModel.fetchImage {
+        viewModel.fetchImage { [weak header] in
+            guard let header else { return }
             header.configure(with: viewModel)
         }
 

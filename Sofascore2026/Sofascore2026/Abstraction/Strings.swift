@@ -15,5 +15,9 @@ enum AppStrings {
     static let icTrophy = "ic_trophy"
     static let icSettings = "ic_settings"
     static let icArrowLeft = "ic_arrow_left"
-    static let dash = "-"
+    static let icFootball = "ic_football"
+    static let icBasketball = "ic_basketball"
+    static let icAmericanFootball = "ic_american_football"
+    static let scoreDash = "-"
+    static let titleSeparator = " · "
 }

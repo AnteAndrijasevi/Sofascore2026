@@ -1,26 +1,6 @@
 import UIKit
 import SofaAcademic
 
-enum MatchResult {
-    case homeWin
-    case awayWin
-    case draw
-
-    var homeTeamColor: UIColor {
-        switch self {
-        case .awayWin: return AppColors.secondaryText
-        case .homeWin, .draw: return AppColors.primaryText
-        }
-    }
-
-    var awayTeamColor: UIColor {
-        switch self {
-        case .homeWin: return AppColors.secondaryText
-        case .awayWin, .draw: return AppColors.primaryText
-        }
-    }
-}
-
 final class MatchRowViewModel {
     let homeTeamName: String
     let awayTeamName: String
@@ -36,27 +16,23 @@ final class MatchRowViewModel {
     var awayTeamLogo: UIImage?
 
     var homeTeamTextColor: UIColor {
-        isLive ? AppColors.primaryText : (result?.homeTeamColor ?? AppColors.primaryText)
+        result?.homeTeamColor(isLive: isLive) ?? AppColors.primaryText
     }
 
     var awayTeamTextColor: UIColor {
-        isLive ? AppColors.primaryText : (result?.awayTeamColor ?? AppColors.primaryText)
+        result?.awayTeamColor(isLive: isLive) ?? AppColors.primaryText
     }
 
     var homeScoreTextColor: UIColor {
-        isLive ? AppColors.liveRed : (result?.homeTeamColor ?? AppColors.primaryText)
+        result?.homeScoreColor(isLive: isLive) ?? AppColors.primaryText
     }
 
     var awayScoreTextColor: UIColor {
-        isLive ? AppColors.liveRed : (result?.awayTeamColor ?? AppColors.primaryText)
-    }
-
-    var dashTextColor: UIColor {
-        isLive ? AppColors.liveRed : AppColors.secondaryText
+        result?.awayScoreColor(isLive: isLive) ?? AppColors.primaryText
     }
 
     var statusTextColor: UIColor {
-        isLive ? AppColors.liveRed : AppColors.secondaryText
+        result?.statusColor(isLive: isLive) ?? AppColors.secondaryText
     }
 
     init(event: Event) {

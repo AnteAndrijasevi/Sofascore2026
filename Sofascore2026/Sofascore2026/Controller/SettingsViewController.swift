@@ -2,6 +2,8 @@ import UIKit
 
 final class SettingsViewController: UIViewController {
 
+    private let dismissButton = UIBarButtonItem()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -18,19 +20,18 @@ final class SettingsViewController: UIViewController {
 
     private func styleViews() {
         view.backgroundColor = AppColors.surface
+        dismissButton.image = UIImage(systemName: "xmark")?.withRenderingMode(.alwaysTemplate)
+        dismissButton.style = .plain
+        navigationController?.navigationBar.tintColor = AppColors.primaryText
     }
 
     private func setupConstraints() {}
 
     private func setupNavigationBar() {
         title = AppStrings.settings
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "xmark")?.withRenderingMode(.alwaysTemplate),
-            style: .plain,
-            target: self,
-            action: #selector(dismissTapped)
-        )
-        navigationController?.navigationBar.tintColor = AppColors.primaryText
+        dismissButton.target = self
+        dismissButton.action = #selector(dismissTapped)
+        navigationItem.leftBarButtonItem = dismissButton
     }
 
     @objc private func dismissTapped() {

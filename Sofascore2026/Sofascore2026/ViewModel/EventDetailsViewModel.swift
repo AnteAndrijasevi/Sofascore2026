@@ -24,27 +24,32 @@ final class EventDetailsViewModel {
     var leagueLogo: UIImage?
 
     var homeTeamTextColor: UIColor {
-        isLive ? AppColors.primaryText : (result?.homeTeamColor ?? AppColors.primaryText)
+        result?.homeTeamColor(isLive: isLive) ?? AppColors.primaryText
     }
 
     var awayTeamTextColor: UIColor {
-        isLive ? AppColors.primaryText : (result?.awayTeamColor ?? AppColors.primaryText)
+        result?.awayTeamColor(isLive: isLive) ?? AppColors.primaryText
     }
 
     var homeScoreTextColor: UIColor {
-        isLive ? AppColors.liveRed : (result?.homeTeamColor ?? AppColors.primaryText)
+        result?.homeScoreColor(isLive: isLive) ?? AppColors.primaryText
     }
 
     var awayScoreTextColor: UIColor {
-        isLive ? AppColors.liveRed : (result?.awayTeamColor ?? AppColors.primaryText)
+        result?.awayScoreColor(isLive: isLive) ?? AppColors.primaryText
     }
 
     var dashTextColor: UIColor {
-        isLive ? AppColors.liveRed : AppColors.secondaryText
+        result?.dashColor(isLive: isLive) ?? AppColors.secondaryText
     }
 
     var statusTextColor: UIColor {
-        isLive ? AppColors.liveRed : AppColors.secondaryText
+        result?.statusColor(isLive: isLive) ?? AppColors.secondaryText
+    }
+
+    var titleText: String {
+        let parts = [sportName, countryName ?? "", leagueName].filter { !$0.isEmpty }
+        return parts.joined(separator: AppStrings.titleSeparator)
     }
 
     init(event: Event, sport: Sport) {

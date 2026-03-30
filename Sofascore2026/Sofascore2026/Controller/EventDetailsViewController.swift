@@ -10,6 +10,7 @@ final class EventDetailsViewController: UIViewController {
         static let centerSpacing: CGFloat = 4
         static let cardVerticalPadding: CGFloat = 16
         static let titleLogoSize: CGFloat = 16
+        static let titleLogoSpacing: CGFloat = 4
     }
 
     private let viewModel: EventDetailsViewModel
@@ -76,15 +77,14 @@ final class EventDetailsViewController: UIViewController {
         addViews()
         styleViews()
         setupConstraints()
+        setupNavigationBar()
     }
 
     private func addViews() {
+        view.addSubview(teamsRow)
+        view.addSubview(separator)
         titleView.addSubview(titleLogoImageView)
         titleView.addSubview(titleLabel)
-        navigationItem.titleView = titleView
-
-        navigationItem.hidesBackButton = true
-        navigationItem.leftBarButtonItem = backButton
 
         homeTeamStack.addArrangedSubview(homeLogoImageView)
         homeTeamStack.addArrangedSubview(homeNameLabel)
@@ -104,9 +104,6 @@ final class EventDetailsViewController: UIViewController {
         teamsRow.addArrangedSubview(homeTeamStack)
         teamsRow.addArrangedSubview(centerStack)
         teamsRow.addArrangedSubview(awayTeamStack)
-
-        view.addSubview(teamsRow)
-        view.addSubview(separator)
     }
 
     private func styleViews() {
@@ -114,18 +111,12 @@ final class EventDetailsViewController: UIViewController {
 
         titleLabel.font = AppFonts.caption
         titleLabel.textColor = AppColors.secondaryText
-        let country = viewModel.countryName ?? ""
-        let parts = [viewModel.sportName, country, viewModel.leagueName].filter { !$0.isEmpty }
-        titleLabel.text = parts.joined(separator: " · ")
 
         titleLogoImageView.contentMode = .scaleAspectFit
         titleLogoImageView.clipsToBounds = true
 
-        let backImage = UIImage(named: AppStrings.icArrowLeft)?.withRenderingMode(.alwaysOriginal)
-        backButton.image = backImage
+        backButton.image = UIImage(named: AppStrings.icArrowLeft)?.withRenderingMode(.alwaysOriginal)
         backButton.style = .plain
-        backButton.target = self
-        backButton.action = #selector(backTapped)
         if #available(iOS 26.0, *) {
             backButton.hidesSharedBackground = true
         }
@@ -176,8 +167,6 @@ final class EventDetailsViewController: UIViewController {
         dashLabel.font = AppFonts.scoreboard
         dashLabel.textColor = AppColors.secondaryText
         dashLabel.textAlignment = .center
-        dashLabel.text = AppStrings.dash
-
         awayScoreLabel.font = AppFonts.scoreboard
         awayScoreLabel.textAlignment = .center
 
@@ -199,7 +188,7 @@ final class EventDetailsViewController: UIViewController {
         }
 
         titleLabel.snp.makeConstraints {
-            $0.leading.equalTo(titleLogoImageView.snp.trailing).offset(4)
+            $0.leading.equalTo(titleLogoImageView.snp.trailing).offset(Constants.titleLogoSpacing)
             $0.trailing.centerY.equalToSuperview()
         }
 
@@ -227,11 +216,21 @@ final class EventDetailsViewController: UIViewController {
         }
     }
 
+    private func setupNavigationBar() {
+        backButton.target = self
+        backButton.action = #selector(backTapped)
+        navigationItem.titleView = titleView
+        navigationItem.hidesBackButton = true
+        navigationItem.leftBarButtonItem = backButton
+    }
+
     @objc private func backTapped() {
         navigationController?.popViewController(animated: true)
     }
 
     private func configure(with viewModel: EventDetailsViewModel) {
+        titleLabel.text = viewModel.titleText
+        dashLabel.text = AppStrings.scoreDash
         homeNameLabel.text = viewModel.homeTeamName
         awayNameLabel.text = viewModel.awayTeamName
 

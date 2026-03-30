@@ -28,6 +28,7 @@
 		EF8760EE2F6454740076D62D /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8760ED2F64546F0076D62D /* UIColor+.swift */; };
 		EF944EC12F5B0A8000EA1C14 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = EF944EC02F5B0A8000EA1C14 /* SnapKit */; };
 		EF944EC42F6043EC00EA1C14 /* SofaAcademic in Frameworks */ = {isa = PBXBuildFile; productRef = EF944EC32F6043EC00EA1C14 /* SofaAcademic */; };
+		EFBC72662F7A895D006E602A /* MatchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFBC72652F7A895D006E602A /* MatchResult.swift */; };
 		EFCF777F2F6B101100D2DB6B /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFCF777E2F6B101000D2DB6B /* ImageService.swift */; };
 		EFCF77812F6B1BCA00D2DB6B /* MatchesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFCF77802F6B1BC900D2DB6B /* MatchesSection.swift */; };
 		EFCF77832F6B1C9600D2DB6B /* Event+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFCF77822F6B1C9300D2DB6B /* Event+.swift */; };
@@ -59,6 +60,7 @@
 		EF7765782F698D81006807A6 /* SportSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportSelectorView.swift; sourceTree = "<group>"; };
 		EF8760ED2F64546F0076D62D /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		EF944EA22F578DDF00EA1C14 /* Sofascore2026.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sofascore2026.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFBC72652F7A895D006E602A /* MatchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchResult.swift; sourceTree = "<group>"; };
 		EFCF777E2F6B101000D2DB6B /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
 		EFCF77802F6B1BC900D2DB6B /* MatchesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesSection.swift; sourceTree = "<group>"; };
 		EFCF77822F6B1C9300D2DB6B /* Event+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+.swift"; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 			children = (
 				EFCF77802F6B1BC900D2DB6B /* MatchesSection.swift */,
 				EF7765742F698A62006807A6 /* Sport.swift */,
+				EFBC72652F7A895D006E602A /* MatchResult.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				EF189F7E2F6048BD008CA689 /* Fonts.swift in Sources */,
 				EF7765792F698D83006807A6 /* SportSelectorView.swift in Sources */,
 				EF7765772F698D39006807A6 /* SportSelectorItemView.swift in Sources */,
+				EFBC72662F7A895D006E602A /* MatchResult.swift in Sources */,
 				EF8760EE2F6454740076D62D /* UIColor+.swift in Sources */,
 				EFCF77852F6B1D0A00D2DB6B /* MatchRowCell.swift in Sources */,
 				73078BD66C7849F99363500B /* HeaderView.swift in Sources */,

@@ -3,6 +3,10 @@ import SnapKit
 
 final class SportSelectorItemView: UIButton {
 
+    private enum Constants {
+        static let iconSize: CGFloat = 16
+    }
+
     private let iconImageView = UIImageView()
     private let sportTitleLabel = UILabel()
     private let selectorBar = UIView()
@@ -44,7 +48,6 @@ final class SportSelectorItemView: UIButton {
 
         selectorBar.backgroundColor = AppColors.clear
         selectorBar.layer.cornerRadius = 1
-        
         stackView.isUserInteractionEnabled = false
         selectorBar.isUserInteractionEnabled = false
     }
@@ -57,7 +60,7 @@ final class SportSelectorItemView: UIButton {
         }
 
         iconImageView.snp.makeConstraints {
-            $0.size.equalTo(16)
+            $0.size.equalTo(Constants.iconSize)
         }
 
         selectorBar.snp.makeConstraints {

@@ -5,12 +5,10 @@ final class EventDetailsViewController: UIViewController {
 
     private enum Constants {
         static let teamLogoSize: CGFloat = 56
-        static let horizontalPadding: CGFloat = 16
         static let teamStackSpacing: CGFloat = 8
         static let centerSpacing: CGFloat = 4
         static let cardVerticalPadding: CGFloat = 16
         static let titleLogoSize: CGFloat = 16
-        static let titleLogoSpacing: CGFloat = 4
     }
 
     private let viewModel: EventDetailsViewModel
@@ -188,7 +186,7 @@ final class EventDetailsViewController: UIViewController {
         }
 
         titleLabel.snp.makeConstraints {
-            $0.leading.equalTo(titleLogoImageView.snp.trailing).offset(Constants.titleLogoSpacing)
+            $0.leading.equalTo(titleLogoImageView.snp.trailing).offset(4)
             $0.trailing.centerY.equalToSuperview()
         }
 
@@ -206,7 +204,7 @@ final class EventDetailsViewController: UIViewController {
 
         teamsRow.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(Constants.cardVerticalPadding)
-            $0.leading.trailing.equalToSuperview().inset(Constants.horizontalPadding)
+            $0.leading.trailing.equalToSuperview().inset(16)
         }
 
         separator.snp.makeConstraints {

@@ -10,13 +10,10 @@ final class SettingsViewController: UIViewController {
     }
 
     private func setupUI() {
-        addViews()
         styleViews()
-        setupConstraints()
         setupNavigationBar()
     }
 
-    private func addViews() {}
 
     private func styleViews() {
         view.backgroundColor = AppColors.surface
@@ -25,7 +22,6 @@ final class SettingsViewController: UIViewController {
         navigationController?.navigationBar.tintColor = AppColors.primaryText
     }
 
-    private func setupConstraints() {}
 
     private func setupNavigationBar() {
         title = AppStrings.settings

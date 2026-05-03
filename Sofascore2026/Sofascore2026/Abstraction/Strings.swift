@@ -11,7 +11,7 @@ enum AppStrings {
     static let settings = "Settings"
     static let fullTimeDetail = "Full Time"
     static let halfTimeDetail = "Half Time"
-    static let icTitle = "ic_title"
+    static let icTitle = "sofascore_title"
     static let icTrophy = "ic_trophy"
     static let icSettings = "ic_settings"
     static let icArrowLeft = "ic_arrow_left"

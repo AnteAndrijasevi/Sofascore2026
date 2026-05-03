@@ -15,9 +15,9 @@ enum Sport {
 
     var iconName: String {
         switch self {
-        case .football: return "ic_football"
-        case .basketball: return "ic_basketball"
-        case .americanFootball: return "ic_american_football"
+        case .football: return AppStrings.icFootball
+        case .basketball: return AppStrings.icBasketball
+        case .americanFootball: return AppStrings.icAmericanFootball
         }
     }
 }

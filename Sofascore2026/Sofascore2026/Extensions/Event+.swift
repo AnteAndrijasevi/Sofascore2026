@@ -1,8 +1,8 @@
 import SofaAcademic
 
-extension Event: @unchecked Sendable {}
+extension Event: @retroactive @unchecked Sendable {}
 
-nonisolated extension Event: Hashable {
+nonisolated extension Event: @retroactive Hashable, @retroactive Equatable {
     public static func == (lhs: Event, rhs: Event) -> Bool {
         lhs.id == rhs.id
     }

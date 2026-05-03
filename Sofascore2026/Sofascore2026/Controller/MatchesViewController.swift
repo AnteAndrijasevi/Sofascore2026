@@ -7,11 +7,13 @@ final class MatchesViewController: UIViewController {
     typealias DataSource = UITableViewDiffableDataSource<MatchesSection, Event>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<MatchesSection, Event>
 
+    private enum Constants {
+        static let sectionHeaderHeight: CGFloat = 56
+    }
+
     private let dataSource = Homework3DataSource()
-    private lazy var sportSelectorView = SportSelectorView(onSportSelected: { [weak self] sport in
-        self?.selectedSport = sport
-        self?.applySnapshot()
-    })
+    private lazy var headerView = HeaderView(onSettingsTapped: handleSettingsTapped)
+    private lazy var sportSelectorView = SportSelectorView(onSportSelected: handleSportSelected)
     private let tableView = UITableView()
     private var selectedSport: Sport = .football
     private var diffableDataSource: DataSource?
@@ -23,38 +25,68 @@ final class MatchesViewController: UIViewController {
         applySnapshot()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
     private func setupUI() {
         addViews()
         styleViews()
         setupConstraints()
+        setupDelegates()
     }
 
     private func addViews() {
+        view.addSubview(headerView)
         view.addSubview(sportSelectorView)
         view.addSubview(tableView)
     }
 
     private func styleViews() {
-        view.backgroundColor = AppColors.surface
+        view.backgroundColor = AppColors.primary
         tableView.separatorStyle = .none
         tableView.backgroundColor = AppColors.surface
         tableView.rowHeight = 56
-        tableView.sectionHeaderHeight = 56
+        tableView.sectionHeaderHeight = Constants.sectionHeaderHeight
         tableView.register(MatchRowCell.self, forCellReuseIdentifier: MatchRowCell.identifier)
         tableView.register(LeagueHeaderView.self, forHeaderFooterViewReuseIdentifier: LeagueHeaderView.identifier)
+    }
+
+    private func setupDelegates() {
         tableView.delegate = self
     }
 
     private func setupConstraints() {
+        headerView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(Constants.sectionHeaderHeight)
+        }
+
         sportSelectorView.snp.makeConstraints {
-            $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(headerView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(56)
         }
 
         tableView.snp.makeConstraints {
             $0.top.equalTo(sportSelectorView.snp.bottom)
-            $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            $0.bottom.equalToSuperview()
         }
+    }
+
+    private func handleSettingsTapped() {
+        let settingsVC = SettingsViewController()
+        let navController = UINavigationController(rootViewController: settingsVC)
+        navController.modalPresentationStyle = .fullScreen
+        present(navController, animated: true)
+    }
+
+    private func handleSportSelected(_ sport: Sport) {
+        selectedSport = sport
+        applySnapshot()
     }
 
     private func configureDataSource() {
@@ -65,7 +97,8 @@ final class MatchesViewController: UIViewController {
             ) as? MatchRowCell else { return UITableViewCell() }
 
             let viewModel = MatchRowViewModel(event: event)
-            viewModel.fetchImages {
+            viewModel.fetchImages { [weak cell] in
+                guard let cell else { return }
                 cell.configure(with: viewModel)
             }
             return cell
@@ -120,12 +153,21 @@ extension MatchesViewController: UITableViewDelegate {
             leagueName: sectionIdentifier.leagueName,
             logoUrl: sectionIdentifier.logoUrl
         )
-        viewModel.fetchImage {
+        viewModel.fetchImage { [weak header] in
+            guard let header else { return }
             header.configure(with: viewModel)
         }
 
         header.showSeparator(section != 0)
 
         return header
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let event = diffableDataSource?.itemIdentifier(for: indexPath) else { return }
+        let viewModel = EventDetailsViewModel(event: event, sport: selectedSport)
+        let eventDetailsVC = EventDetailsViewController(viewModel: viewModel)
+        navigationController?.pushViewController(eventDetailsVC, animated: true)
     }
 }

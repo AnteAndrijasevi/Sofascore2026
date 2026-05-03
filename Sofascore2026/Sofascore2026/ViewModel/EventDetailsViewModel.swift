@@ -1,19 +1,27 @@
 import UIKit
 import SofaAcademic
 
-final class MatchRowViewModel {
+final class EventDetailsViewModel {
+
     let homeTeamName: String
     let awayTeamName: String
     let homeTeamLogoUrl: String?
     let awayTeamLogoUrl: String?
     let homeScore: String?
     let awayScore: String?
-    let timeOrStatus: String
     let statusLine: String
     let isLive: Bool
+    let startDate: String
+    let startTime: String
+    let leagueName: String
+    let countryName: String?
+    let leagueLogoUrl: String?
     let result: MatchResult?
+    let sportName: String
+
     var homeTeamLogo: UIImage?
     var awayTeamLogo: UIImage?
+    var leagueLogo: UIImage?
 
     var homeTeamTextColor: UIColor {
         result?.homeTeamColor(isLive: isLive) ?? AppColors.primaryText
@@ -31,49 +39,63 @@ final class MatchRowViewModel {
         result?.awayScoreColor(isLive: isLive) ?? AppColors.primaryText
     }
 
+    var dashTextColor: UIColor {
+        result?.dashColor(isLive: isLive) ?? AppColors.secondaryText
+    }
+
     var statusTextColor: UIColor {
         result?.statusColor(isLive: isLive) ?? AppColors.secondaryText
     }
 
-    init(event: Event) {
-        self.homeTeamName = event.homeTeam.name
-        self.awayTeamName = event.awayTeam.name
-        self.homeTeamLogoUrl = event.homeTeam.logoUrl
-        self.awayTeamLogoUrl = event.awayTeam.logoUrl
+    var titleText: String {
+        let parts = [sportName, countryName ?? "", leagueName].filter { !$0.isEmpty }
+        return parts.joined(separator: AppStrings.titleSeparator)
+    }
+
+    init(event: Event, sport: Sport) {
+        homeTeamName = event.homeTeam.name
+        awayTeamName = event.awayTeam.name
+        homeTeamLogoUrl = event.homeTeam.logoUrl
+        awayTeamLogoUrl = event.awayTeam.logoUrl
+
+        sportName = sport.title
+
+        startDate = EventDetailsHelper.formattedDate(from: event.startTimestamp)
+        startTime = EventDetailsHelper.formattedTime(from: event.startTimestamp)
+
+        leagueName = event.league?.name ?? ""
+        countryName = event.league?.country?.name
+        leagueLogoUrl = event.league?.logoUrl
 
         switch event.status {
         case .finished:
-            self.timeOrStatus = MatchesHelper.formattedTime(from: event.startTimestamp)
-            self.statusLine = AppStrings.fullTime
-            self.isLive = false
+            statusLine = AppStrings.fullTimeDetail
+            isLive = false
         case .inProgress:
-            self.timeOrStatus = MatchesHelper.formattedTime(from: event.startTimestamp)
-            self.statusLine = AppStrings.inProgressPlaceholder
-            self.isLive = true
+            statusLine = AppStrings.inProgressPlaceholder
+            isLive = true
         case .halftime:
-            self.timeOrStatus = MatchesHelper.formattedTime(from: event.startTimestamp)
-            self.statusLine = AppStrings.halfTime
-            self.isLive = true
+            statusLine = AppStrings.halfTimeDetail
+            isLive = true
         case .notStarted:
-            self.timeOrStatus = MatchesHelper.formattedTime(from: event.startTimestamp)
-            self.statusLine = AppStrings.notStarted
-            self.isLive = false
+            statusLine = AppStrings.notStarted
+            isLive = false
         }
 
         if let home = event.homeScore, let away = event.awayScore {
-            self.homeScore = "\(home)"
-            self.awayScore = "\(away)"
+            homeScore = "\(home)"
+            awayScore = "\(away)"
             if home > away {
-                self.result = .homeWin
+                result = .homeWin
             } else if away > home {
-                self.result = .awayWin
+                result = .awayWin
             } else {
-                self.result = .draw
+                result = .draw
             }
         } else {
-            self.homeScore = nil
-            self.awayScore = nil
-            self.result = nil
+            homeScore = nil
+            awayScore = nil
+            result = nil
         }
     }
 
@@ -92,6 +114,14 @@ final class MatchRowViewModel {
             group.enter()
             ImageService.fetchImage(from: url) { [weak self] image in
                 self?.awayTeamLogo = image
+                group.leave()
+            }
+        }
+
+        if let urlString = leagueLogoUrl, let url = URL(string: urlString) {
+            group.enter()
+            ImageService.fetchImage(from: url) { [weak self] image in
+                self?.leagueLogo = image
                 group.leave()
             }
         }

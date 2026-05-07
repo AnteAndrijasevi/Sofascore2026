@@ -6,10 +6,9 @@ final class MatchRowView: UIView {
     private enum Constants {
         static let logoSize: CGFloat = 16
         static let scoreLabelWidth: CGFloat = 20
-        static let separatorHeight: CGFloat = 40
-        static let timeStackWidth: CGFloat = 40
         static let spacing: CGFloat = 8
         static let horizontalPadding: CGFloat = 16
+        static let timeColumnWidth: CGFloat = 40
     }
 
     private let timeLabel = UILabel()
@@ -101,11 +100,9 @@ final class MatchRowView: UIView {
         awayScoreLabel.textColor = AppColors.primaryText
         awayScoreLabel.textAlignment = .right
 
-        homeRowStack.axis = .horizontal
         homeRowStack.spacing = Constants.spacing
         homeRowStack.alignment = .center
 
-        awayRowStack.axis = .horizontal
         awayRowStack.spacing = Constants.spacing
         awayRowStack.alignment = .center
 
@@ -118,14 +115,14 @@ final class MatchRowView: UIView {
         timeStackView.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(Constants.horizontalPadding)
             $0.centerY.equalToSuperview()
-            $0.width.equalTo(Constants.timeStackWidth)
+            $0.width.equalTo(Constants.timeColumnWidth)
         }
 
         separator.snp.makeConstraints {
             $0.leading.equalTo(timeStackView.snp.trailing).offset(Constants.spacing)
             $0.centerY.equalToSuperview()
             $0.width.equalTo(1)
-            $0.height.equalTo(Constants.separatorHeight)
+            $0.height.equalTo(Constants.timeColumnWidth)
         }
 
         teamsStackView.snp.makeConstraints {
@@ -160,12 +157,14 @@ final class MatchRowView: UIView {
         homeScoreLabel.text = viewModel.homeScore
         awayScoreLabel.text = viewModel.awayScore
 
-        homeLogoImageView.image = viewModel.homeTeamLogo
-        awayLogoImageView.image = viewModel.awayTeamLogo
-
         homeNameLabel.textColor = viewModel.homeTeamTextColor
         homeScoreLabel.textColor = viewModel.homeScoreTextColor
         awayNameLabel.textColor = viewModel.awayTeamTextColor
         awayScoreLabel.textColor = viewModel.awayScoreTextColor
+    }
+
+    func updateImages(with viewModel: MatchRowViewModel) {
+        homeLogoImageView.image = viewModel.homeTeamLogo
+        awayLogoImageView.image = viewModel.awayTeamLogo
     }
 }

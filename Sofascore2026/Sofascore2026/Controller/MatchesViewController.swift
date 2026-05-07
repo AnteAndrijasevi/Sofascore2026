@@ -1,6 +1,5 @@
 import UIKit
 import SnapKit
-import SofaAcademic
 
 final class MatchesViewController: UIViewController {
 
@@ -11,7 +10,6 @@ final class MatchesViewController: UIViewController {
         static let sectionHeaderHeight: CGFloat = 56
     }
 
-    private let dataSource = Homework3DataSource()
     private lazy var headerView = HeaderView(onSettingsTapped: handleSettingsTapped)
     private lazy var sportSelectorView = SportSelectorView(onSportSelected: handleSportSelected)
     private let tableView = UITableView()
@@ -22,7 +20,7 @@ final class MatchesViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         configureDataSource()
-        applySnapshot()
+        loadEvents()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -86,7 +84,15 @@ final class MatchesViewController: UIViewController {
 
     private func handleSportSelected(_ sport: Sport) {
         selectedSport = sport
-        applySnapshot()
+        loadEvents()
+    }
+
+    private func loadEvents() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            let events = (try? await APIClient.shared.fetchEvents(for: selectedSport.slug)) ?? []
+            applySnapshot(with: events)
+        }
     }
 
     private func configureDataSource() {
@@ -97,39 +103,30 @@ final class MatchesViewController: UIViewController {
             ) as? MatchRowCell else { return UITableViewCell() }
 
             let viewModel = MatchRowViewModel(event: event)
+            cell.configure(with: viewModel)
             viewModel.fetchImages { [weak cell] in
                 guard let cell else { return }
-                cell.configure(with: viewModel)
+                cell.updateImages(with: viewModel)
             }
             return cell
         }
     }
 
-    private func applySnapshot() {
-        let allEvents = dataSource.events()
-        let filteredEvents: [Event]
-
-        switch selectedSport {
-        case .football:
-            filteredEvents = allEvents
-        case .basketball, .americanFootball:
-            filteredEvents = []
-        }
-
+    private func applySnapshot(with events: [Event]) {
         var seenLeagueIds = Set<Int>()
         var orderedLeagues: [League] = []
 
-        for event in filteredEvents {
-            guard let league = event.league, !seenLeagueIds.contains(league.id) else { continue }
-            seenLeagueIds.insert(league.id)
-            orderedLeagues.append(league)
+        for event in events {
+            guard !seenLeagueIds.contains(event.league.id) else { continue }
+            seenLeagueIds.insert(event.league.id)
+            orderedLeagues.append(event.league)
         }
 
         var snapshot = Snapshot()
 
         for league in orderedLeagues {
             let section = MatchesSection(league: league)
-            let leagueEvents = filteredEvents.filter { $0.league?.id == league.id }
+            let leagueEvents = events.filter { $0.league.id == league.id }
             snapshot.appendSections([section])
             snapshot.appendItems(leagueEvents, toSection: section)
         }
@@ -153,9 +150,10 @@ extension MatchesViewController: UITableViewDelegate {
             leagueName: sectionIdentifier.leagueName,
             logoUrl: sectionIdentifier.logoUrl
         )
+        header.configure(with: viewModel)
         viewModel.fetchImage { [weak header] in
             guard let header else { return }
-            header.configure(with: viewModel)
+            header.updateLogo(viewModel.logoImage)
         }
 
         header.showSeparator(section != 0)

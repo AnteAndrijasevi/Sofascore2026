@@ -20,4 +20,10 @@ enum AppStrings {
     static let icAmericanFootball = "ic_american_football"
     static let scoreDash = "-"
     static let titleSeparator = " · "
+    static let footballSlug = "football"
+    static let basketballSlug = "basketball"
+    static let americanFootballSlug = "am-football"
+    static let errorTitle = "Error"
+    static let errorMessage = "Could not load matches. Check your connection and try again."
+    static let ok = "OK"
 }

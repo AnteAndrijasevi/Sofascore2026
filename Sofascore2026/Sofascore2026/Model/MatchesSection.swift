@@ -1,7 +1,6 @@
 import Foundation
-import SofaAcademic
 
-nonisolated struct MatchesSection: Hashable, @unchecked Sendable {
+nonisolated struct MatchesSection: Hashable, Sendable {
     let leagueId: Int
     let leagueName: String
     let countryName: String

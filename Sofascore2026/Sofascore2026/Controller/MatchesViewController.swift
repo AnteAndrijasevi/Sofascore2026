@@ -3,12 +3,13 @@ import SnapKit
 
 final class MatchesViewController: UIViewController {
 
+    private enum Constants {
+        static let headerHeight: CGFloat = 56
+        static let rowHeight: CGFloat = 56
+    }
+
     typealias DataSource = UITableViewDiffableDataSource<MatchesSection, Event>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<MatchesSection, Event>
-
-    private enum Constants {
-        static let sectionHeaderHeight: CGFloat = 56
-    }
 
     private lazy var headerView = HeaderView(onSettingsTapped: handleSettingsTapped)
     private lazy var sportSelectorView = SportSelectorView(onSportSelected: handleSportSelected)
@@ -45,8 +46,8 @@ final class MatchesViewController: UIViewController {
         view.backgroundColor = AppColors.primary
         tableView.separatorStyle = .none
         tableView.backgroundColor = AppColors.surface
-        tableView.rowHeight = 56
-        tableView.sectionHeaderHeight = Constants.sectionHeaderHeight
+        tableView.rowHeight = Constants.rowHeight
+        tableView.sectionHeaderHeight = Constants.rowHeight
         tableView.register(MatchRowCell.self, forCellReuseIdentifier: MatchRowCell.identifier)
         tableView.register(LeagueHeaderView.self, forHeaderFooterViewReuseIdentifier: LeagueHeaderView.identifier)
     }
@@ -59,13 +60,13 @@ final class MatchesViewController: UIViewController {
         headerView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(Constants.sectionHeaderHeight)
+            $0.height.equalTo(Constants.headerHeight)
         }
 
         sportSelectorView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(56)
+            $0.height.equalTo(Constants.headerHeight)
         }
 
         tableView.snp.makeConstraints {
@@ -82,6 +83,16 @@ final class MatchesViewController: UIViewController {
         present(navController, animated: true)
     }
 
+    private func showErrorAlert() {
+        let alert = UIAlertController(
+            title: AppStrings.errorTitle,
+            message: AppStrings.errorMessage,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: AppStrings.ok, style: .default))
+        present(alert, animated: true)
+    }
+
     private func handleSportSelected(_ sport: Sport) {
         selectedSport = sport
         loadEvents()
@@ -90,8 +101,13 @@ final class MatchesViewController: UIViewController {
     private func loadEvents() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            let events = (try? await APIClient.shared.fetchEvents(for: selectedSport.slug)) ?? []
-            applySnapshot(with: events)
+            do {
+                let events = try await APIClient.shared.fetchEvents(for: selectedSport.slug)
+                applySnapshot(with: events)
+            } catch {
+                applySnapshot(with: [])
+                showErrorAlert()
+            }
         }
     }
 
@@ -106,29 +122,26 @@ final class MatchesViewController: UIViewController {
             cell.configure(with: viewModel)
             viewModel.fetchImages { [weak cell] in
                 guard let cell else { return }
-                cell.updateImages(with: viewModel)
+                cell.updateImagesIfStillRelevant(for: viewModel)
             }
             return cell
         }
     }
 
     private func applySnapshot(with events: [Event]) {
+        let eventsByLeague = Dictionary(grouping: events, by: { $0.league.id })
+
         var seenLeagueIds = Set<Int>()
         var orderedLeagues: [League] = []
-
-        for event in events {
-            guard !seenLeagueIds.contains(event.league.id) else { continue }
-            seenLeagueIds.insert(event.league.id)
+        for event in events where seenLeagueIds.insert(event.league.id).inserted {
             orderedLeagues.append(event.league)
         }
 
         var snapshot = Snapshot()
-
         for league in orderedLeagues {
             let section = MatchesSection(league: league)
-            let leagueEvents = events.filter { $0.league.id == league.id }
             snapshot.appendSections([section])
-            snapshot.appendItems(leagueEvents, toSection: section)
+            snapshot.appendItems(eventsByLeague[league.id] ?? [], toSection: section)
         }
 
         diffableDataSource?.apply(snapshot, animatingDifferences: true)
@@ -153,7 +166,7 @@ extension MatchesViewController: UITableViewDelegate {
         header.configure(with: viewModel)
         viewModel.fetchImage { [weak header] in
             guard let header else { return }
-            header.updateLogo(viewModel.logoImage)
+            header.updateLogoIfStillRelevant(for: viewModel)
         }
 
         header.showSeparator(section != 0)

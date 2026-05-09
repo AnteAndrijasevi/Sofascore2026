@@ -40,7 +40,7 @@ final class MatchRowViewModel {
         self.homeTeamLogoUrl = event.homeTeam.logoUrl
         self.awayTeamLogoUrl = event.awayTeam.logoUrl
 
-        self.timeOrStatus = MatchesHelper.formattedTime(from: event.startTimestamp)
+        self.timeOrStatus = DateFormattersHelper.formattedTime(from: event.startTimestamp)
 
         switch event.status {
         case .finished:

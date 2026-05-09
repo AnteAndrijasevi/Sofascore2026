@@ -5,10 +5,12 @@ final class LeagueHeaderView: UITableViewHeaderFooterView {
 
     static let identifier = "LeagueHeaderView"
 
+    private var currentViewModel: LeagueHeaderViewModel?
+
     private enum Constants {
-        static let logoSize: CGFloat = 32
         static let horizontalPadding: CGFloat = 16
-        static let separatorOverlap: CGFloat = 8
+        static let logoSize: CGFloat = 32
+        static let topSeparatorOffset: CGFloat = 8
     }
 
     private let topSeparator = UIView()
@@ -47,7 +49,6 @@ final class LeagueHeaderView: UITableViewHeaderFooterView {
         topSeparator.backgroundColor = AppColors.separator
 
         logoImageView.contentMode = .scaleAspectFit
-        logoImageView.clipsToBounds = true
 
         countryLabel.font = AppFonts.headline
         countryLabel.textColor = AppColors.primaryText
@@ -75,10 +76,10 @@ final class LeagueHeaderView: UITableViewHeaderFooterView {
             $0.centerY.equalToSuperview()
             $0.trailing.lessThanOrEqualToSuperview().offset(-Constants.horizontalPadding)
         }
-        
+
         topSeparator.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
-            $0.top.equalToSuperview().offset(-Constants.separatorOverlap)
+            $0.top.equalToSuperview().offset(-Constants.topSeparatorOffset)
             $0.height.equalTo(1)
         }
     }
@@ -88,8 +89,13 @@ final class LeagueHeaderView: UITableViewHeaderFooterView {
     }
 
     func configure(with viewModel: LeagueHeaderViewModel) {
+        currentViewModel = viewModel
         countryLabel.text = viewModel.countryName
         leagueNameLabel.text = viewModel.leagueName
+    }
+
+    func updateLogoIfStillRelevant(for viewModel: LeagueHeaderViewModel) {
+        guard currentViewModel === viewModel else { return }
         logoImageView.image = viewModel.logoImage
     }
 }

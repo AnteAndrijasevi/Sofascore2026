@@ -17,6 +17,7 @@ final class APIClient {
         case invalidURL
         case networkError(Error)
         case decodingFailed
+        case httpError(statusCode: Int)
     }
 
     private func makeEventsURL(sportSlug: String) -> URL? {
@@ -26,6 +27,40 @@ final class APIClient {
         return components?.url
     }
 
+    func fetchEvents(
+        for sportSlug: String,
+        completion: @escaping (Result<[Event], APIError>) -> Void
+    ) {
+        guard let url = makeEventsURL(sportSlug: sportSlug) else {
+            DispatchQueue.main.async { completion(.failure(.invalidURL)) }
+            return
+        }
+
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error {
+                DispatchQueue.main.async { completion(.failure(.networkError(error))) }
+                return
+            }
+
+            if let httpResponse = response as? HTTPURLResponse, !(200..<300).contains(httpResponse.statusCode) {
+                DispatchQueue.main.async { completion(.failure(.httpError(statusCode: httpResponse.statusCode))) }
+                return
+            }
+
+            guard let data else {
+                DispatchQueue.main.async { completion(.failure(.networkError(URLError(.badServerResponse)))) }
+                return
+            }
+
+            do {
+                let events = try Self.decoder.decode([Event].self, from: data)
+                DispatchQueue.main.async { completion(.success(events)) }
+            } catch {
+                DispatchQueue.main.async { completion(.failure(.decodingFailed)) }
+            }
+        }.resume()
+    }
+
     func fetchEvents(for sportSlug: String) async throws -> [Event] {
         guard let url = makeEventsURL(sportSlug: sportSlug) else {
             throw APIError.invalidURL
@@ -33,8 +68,13 @@ final class APIClient {
 
         let data: Data
         do {
-            let (responseData, _) = try await URLSession.shared.data(from: url)
+            let (responseData, response) = try await URLSession.shared.data(from: url)
+            if let httpResponse = response as? HTTPURLResponse, !(200..<300).contains(httpResponse.statusCode) {
+                throw APIError.httpError(statusCode: httpResponse.statusCode)
+            }
             data = responseData
+        } catch let error as APIError {
+            throw error
         } catch {
             throw APIError.networkError(error)
         }

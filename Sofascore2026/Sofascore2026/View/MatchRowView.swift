@@ -81,10 +81,8 @@ final class MatchRowView: UIView {
         separator.backgroundColor = AppColors.separator
 
         homeLogoImageView.contentMode = .scaleAspectFit
-        homeLogoImageView.clipsToBounds = true
 
         awayLogoImageView.contentMode = .scaleAspectFit
-        awayLogoImageView.clipsToBounds = true
 
         homeNameLabel.font = AppFonts.body
         homeNameLabel.textColor = AppColors.primaryText
@@ -148,6 +146,11 @@ final class MatchRowView: UIView {
         }
     }
 
+    func updateImages(with viewModel: MatchRowViewModel) {
+        homeLogoImageView.image = viewModel.homeTeamLogo
+        awayLogoImageView.image = viewModel.awayTeamLogo
+    }
+
     func configure(with viewModel: MatchRowViewModel) {
         timeLabel.text = viewModel.timeOrStatus
         statusLabel.text = viewModel.statusLine
@@ -161,10 +164,5 @@ final class MatchRowView: UIView {
         homeScoreLabel.textColor = viewModel.homeScoreTextColor
         awayNameLabel.textColor = viewModel.awayTeamTextColor
         awayScoreLabel.textColor = viewModel.awayScoreTextColor
-    }
-
-    func updateImages(with viewModel: MatchRowViewModel) {
-        homeLogoImageView.image = viewModel.homeTeamLogo
-        awayLogoImageView.image = viewModel.awayTeamLogo
     }
 }

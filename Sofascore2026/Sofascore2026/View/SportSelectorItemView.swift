@@ -4,7 +4,10 @@ import SnapKit
 final class SportSelectorItemView: UIButton {
 
     private enum Constants {
-        static let iconSize: CGFloat = 16
+        static let stackVerticalPadding: CGFloat = 8
+        static let selectorBarBottomInset: CGFloat = 2
+        static let selectorBarHeight: CGFloat = 4
+        static let selectorBarCornerRadius: CGFloat = 1
     }
 
     private let iconImageView = UIImageView()
@@ -47,26 +50,26 @@ final class SportSelectorItemView: UIButton {
         stackView.alignment = .center
 
         selectorBar.backgroundColor = AppColors.clear
-        selectorBar.layer.cornerRadius = 1
+        selectorBar.layer.cornerRadius = Constants.selectorBarCornerRadius
         stackView.isUserInteractionEnabled = false
         selectorBar.isUserInteractionEnabled = false
     }
 
     private func setupConstraints() {
         stackView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(8)
+            $0.top.equalToSuperview().offset(Constants.stackVerticalPadding)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(selectorBar.snp.top).offset(-8)
+            $0.bottom.equalTo(selectorBar.snp.top).offset(-Constants.stackVerticalPadding)
         }
 
         iconImageView.snp.makeConstraints {
-            $0.size.equalTo(Constants.iconSize)
+            $0.size.equalTo(16)
         }
 
         selectorBar.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(2)
-            $0.height.equalTo(4)
+            $0.bottom.equalToSuperview().inset(Constants.selectorBarBottomInset)
+            $0.height.equalTo(Constants.selectorBarHeight)
         }
     }
 

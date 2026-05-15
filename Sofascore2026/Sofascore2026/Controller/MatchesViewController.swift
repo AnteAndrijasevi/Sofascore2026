@@ -16,6 +16,8 @@ final class MatchesViewController: UIViewController {
     private let tableView = UITableView()
     private var selectedSport: Sport = .football
     private var diffableDataSource: DataSource?
+    private var loadTask: Task<Void, Never>?
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,15 +100,19 @@ final class MatchesViewController: UIViewController {
         loadEvents()
     }
 
+
     private func loadEvents() {
-        Task { @MainActor [weak self] in
+        loadTask?.cancel()
+        loadTask = Task { @MainActor [weak self] in
             guard let self else { return }
             do {
                 let events = try await APIClient.shared.fetchEvents(for: selectedSport.slug)
+                try Task.checkCancellation()
                 applySnapshot(with: events)
+            } catch is CancellationError {
+                return
             } catch {
                 applySnapshot(with: [])
-                showErrorAlert()
             }
         }
     }

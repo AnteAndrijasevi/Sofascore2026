@@ -6,7 +6,6 @@ final class HeaderView: UIView {
     private enum Constants {
         static let horizontalPadding: CGFloat = 16
         static let iconSize: CGFloat = 24
-        static let iconSpacing: CGFloat = 16
     }
 
     private let onSettingsTapped: () -> Void
@@ -28,6 +27,7 @@ final class HeaderView: UIView {
         addViews()
         styleViews()
         setupConstraints()
+        setupActions()
     }
 
     private func addViews() {
@@ -49,7 +49,6 @@ final class HeaderView: UIView {
             UIImage(named: AppStrings.icSettings)?.withRenderingMode(.alwaysOriginal),
             for: .normal
         )
-        settingsButton.addTarget(self, action: #selector(settingsTapped), for: .touchUpInside)
     }
 
     private func setupConstraints() {
@@ -66,10 +65,14 @@ final class HeaderView: UIView {
         }
 
         trophyImageView.snp.makeConstraints {
-            $0.trailing.equalTo(settingsButton.snp.leading).offset(-Constants.iconSpacing)
+            $0.trailing.equalTo(settingsButton.snp.leading).offset(-Constants.horizontalPadding)
             $0.centerY.equalToSuperview()
             $0.size.equalTo(Constants.iconSize)
         }
+    }
+
+    private func setupActions() {
+        settingsButton.addTarget(self, action: #selector(settingsTapped), for: .touchUpInside)
     }
 
     @objc private func settingsTapped() {

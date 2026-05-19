@@ -6,6 +6,7 @@ final class MatchRowCell: UITableViewCell {
     static let identifier = "MatchRowCell"
 
     private let matchRowView = MatchRowView()
+    private var currentViewModel: MatchRowViewModel?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -38,6 +39,12 @@ final class MatchRowCell: UITableViewCell {
     }
 
     func configure(with viewModel: MatchRowViewModel) {
+        currentViewModel = viewModel
         matchRowView.configure(with: viewModel)
+    }
+
+    func updateImagesIfStillRelevant(for viewModel: MatchRowViewModel) {
+        guard currentViewModel === viewModel else { return }
+        matchRowView.updateImages(with: viewModel)
     }
 }

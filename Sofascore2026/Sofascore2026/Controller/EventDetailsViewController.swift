@@ -111,7 +111,6 @@ final class EventDetailsViewController: UIViewController {
         titleLabel.textColor = AppColors.secondaryText
 
         titleLogoImageView.contentMode = .scaleAspectFit
-        titleLogoImageView.clipsToBounds = true
 
         backButton.image = UIImage(named: AppStrings.icArrowLeft)?.withRenderingMode(.alwaysOriginal)
         backButton.style = .plain
@@ -124,24 +123,26 @@ final class EventDetailsViewController: UIViewController {
         homeTeamStack.spacing = Constants.teamStackSpacing
 
         homeLogoImageView.contentMode = .scaleAspectFit
-        homeLogoImageView.clipsToBounds = true
 
         homeNameLabel.font = AppFonts.headline
         homeNameLabel.textColor = AppColors.primaryText
         homeNameLabel.textAlignment = .center
         homeNameLabel.numberOfLines = 2
+        homeNameLabel.adjustsFontSizeToFitWidth = true
+        homeNameLabel.minimumScaleFactor = 0.8
 
         awayTeamStack.axis = .vertical
         awayTeamStack.alignment = .center
         awayTeamStack.spacing = Constants.teamStackSpacing
 
         awayLogoImageView.contentMode = .scaleAspectFit
-        awayLogoImageView.clipsToBounds = true
 
         awayNameLabel.font = AppFonts.headline
         awayNameLabel.textColor = AppColors.primaryText
         awayNameLabel.textAlignment = .center
         awayNameLabel.numberOfLines = 2
+        awayNameLabel.adjustsFontSizeToFitWidth = true
+        awayNameLabel.minimumScaleFactor = 0.8
 
         centerStack.axis = .vertical
         centerStack.alignment = .center
@@ -155,7 +156,6 @@ final class EventDetailsViewController: UIViewController {
         timeLabel.textColor = AppColors.primaryText
         timeLabel.textAlignment = .center
 
-        scoreRow.axis = .horizontal
         scoreRow.alignment = .center
         scoreRow.spacing = Constants.centerSpacing
 
@@ -165,16 +165,15 @@ final class EventDetailsViewController: UIViewController {
         dashLabel.font = AppFonts.scoreboard
         dashLabel.textColor = AppColors.secondaryText
         dashLabel.textAlignment = .center
+
         awayScoreLabel.font = AppFonts.scoreboard
         awayScoreLabel.textAlignment = .center
 
         statusLabel.font = AppFonts.caption
         statusLabel.textAlignment = .center
 
-        teamsRow.axis = .horizontal
         teamsRow.distribution = .fillEqually
         teamsRow.alignment = .center
-        teamsRow.spacing = 0
 
         separator.backgroundColor = AppColors.separator
     }

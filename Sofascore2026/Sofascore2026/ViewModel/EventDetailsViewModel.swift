@@ -1,5 +1,4 @@
 import UIKit
-import SofaAcademic
 
 final class EventDetailsViewModel {
 
@@ -60,12 +59,12 @@ final class EventDetailsViewModel {
 
         sportName = sport.title
 
-        startDate = EventDetailsHelper.formattedDate(from: event.startTimestamp)
-        startTime = EventDetailsHelper.formattedTime(from: event.startTimestamp)
+        startDate = DateFormattersHelper.formattedDate(from: event.startTimestamp)
+        startTime = DateFormattersHelper.formattedTime(from: event.startTimestamp)
 
-        leagueName = event.league?.name ?? ""
-        countryName = event.league?.country?.name
-        leagueLogoUrl = event.league?.logoUrl
+        leagueName = event.league.name
+        countryName = event.league.country?.name
+        leagueLogoUrl = event.league.logoUrl
 
         switch event.status {
         case .finished:

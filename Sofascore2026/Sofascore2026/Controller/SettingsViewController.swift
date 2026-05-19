@@ -14,14 +14,12 @@ final class SettingsViewController: UIViewController {
         setupNavigationBar()
     }
 
-
     private func styleViews() {
         view.backgroundColor = AppColors.surface
         dismissButton.image = UIImage(systemName: "xmark")?.withRenderingMode(.alwaysTemplate)
         dismissButton.style = .plain
         navigationController?.navigationBar.tintColor = AppColors.primaryText
     }
-
 
     private func setupNavigationBar() {
         title = AppStrings.settings

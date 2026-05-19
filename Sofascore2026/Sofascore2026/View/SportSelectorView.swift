@@ -24,18 +24,26 @@ final class SportSelectorView: UIView {
         addViews()
         styleViews()
         setupConstraints()
+        setupActions()
     }
 
     private func addViews() {
         addSubview(stackView)
-        populateItems()
+        for sport in sports {
+            let itemView = SportSelectorItemView()
+            itemViews.append(itemView)
+            stackView.addArrangedSubview(itemView)
+        }
     }
 
     private func styleViews() {
         backgroundColor = AppColors.primary
 
-        stackView.axis = .horizontal
         stackView.distribution = .fillEqually
+
+        for (index, itemView) in itemViews.enumerated() {
+            itemView.configure(with: sports[index], isSelected: sports[index] == selectedSport)
+        }
     }
 
     private func setupConstraints() {
@@ -44,13 +52,9 @@ final class SportSelectorView: UIView {
         }
     }
 
-    private func populateItems() {
-        for sport in sports {
-            let itemView = SportSelectorItemView()
-            itemView.configure(with: sport, isSelected: sport == selectedSport)
+    private func setupActions() {
+        for itemView in itemViews {
             itemView.addTarget(self, action: #selector(handleTap(_:)), for: .touchUpInside)
-            itemViews.append(itemView)
-            stackView.addArrangedSubview(itemView)
         }
     }
 

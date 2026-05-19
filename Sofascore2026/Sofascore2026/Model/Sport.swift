@@ -20,4 +20,12 @@ enum Sport {
         case .americanFootball: return AppStrings.icAmericanFootball
         }
     }
+
+    var slug: String {
+        switch self {
+        case .football: return AppStrings.footballSlug
+        case .basketball: return AppStrings.basketballSlug
+        case .americanFootball: return AppStrings.americanFootballSlug
+        }
+    }
 }

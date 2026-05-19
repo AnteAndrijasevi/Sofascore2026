@@ -1,5 +1,4 @@
 import UIKit
-import SofaAcademic
 
 final class MatchRowViewModel {
     let homeTeamName: String
@@ -41,21 +40,19 @@ final class MatchRowViewModel {
         self.homeTeamLogoUrl = event.homeTeam.logoUrl
         self.awayTeamLogoUrl = event.awayTeam.logoUrl
 
+        self.timeOrStatus = DateFormattersHelper.formattedTime(from: event.startTimestamp)
+
         switch event.status {
         case .finished:
-            self.timeOrStatus = MatchesHelper.formattedTime(from: event.startTimestamp)
             self.statusLine = AppStrings.fullTime
             self.isLive = false
         case .inProgress:
-            self.timeOrStatus = MatchesHelper.formattedTime(from: event.startTimestamp)
             self.statusLine = AppStrings.inProgressPlaceholder
             self.isLive = true
         case .halftime:
-            self.timeOrStatus = MatchesHelper.formattedTime(from: event.startTimestamp)
             self.statusLine = AppStrings.halfTime
             self.isLive = true
         case .notStarted:
-            self.timeOrStatus = MatchesHelper.formattedTime(from: event.startTimestamp)
             self.statusLine = AppStrings.notStarted
             self.isLive = false
         }

@@ -1,26 +1,24 @@
 import Foundation
 
-final class EventDetailsHelper {
+enum DateFormattersHelper {
 
-    static let dateFormatter: DateFormatter = {
+    private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy."
         return formatter
     }()
 
-    static let timeFormatter: DateFormatter = {
+    private static let timeFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm"
         return formatter
     }()
 
     static func formattedDate(from timestamp: Int) -> String {
-        let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
-        return dateFormatter.string(from: date)
+        dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(timestamp)))
     }
 
     static func formattedTime(from timestamp: Int) -> String {
-        let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
-        return timeFormatter.string(from: date)
+        timeFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(timestamp)))
     }
 }

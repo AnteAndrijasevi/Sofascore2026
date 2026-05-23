@@ -1,6 +1,6 @@
 import UIKit
 
-final class ImageService {
+enum ImageService {
 
     static func fetchImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
         URLSession.shared.dataTask(with: url) { data, _, _ in

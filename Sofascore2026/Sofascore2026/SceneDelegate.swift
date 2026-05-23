@@ -4,15 +4,35 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        let matchesVC = MatchesViewController()
+        showRootViewController()
+        window?.makeKeyAndVisible()
+    }
+
+    private func showRootViewController() {
+        if TokenStore.shared.isLoggedIn {
+            showMatches()
+        } else {
+            showLogin()
+        }
+    }
+
+    private func showMatches() {
+        let matchesVC = MatchesViewController(onLogout: { [weak self] in
+            self?.showLogin()
+        })
         let navController = UINavigationController(rootViewController: matchesVC)
         navController.navigationBar.isHidden = true
         window?.rootViewController = navController
-        window?.makeKeyAndVisible()
+    }
+
+    private func showLogin() {
+        let loginVC = LoginViewController(onLoginSuccess: { [weak self] in
+            self?.showMatches()
+        })
+        window?.rootViewController = loginVC
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

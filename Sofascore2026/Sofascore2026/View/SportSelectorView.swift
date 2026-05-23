@@ -29,7 +29,7 @@ final class SportSelectorView: UIView {
 
     private func addViews() {
         addSubview(stackView)
-        for sport in sports {
+        for _ in sports {
             let itemView = SportSelectorItemView()
             itemViews.append(itemView)
             stackView.addArrangedSubview(itemView)

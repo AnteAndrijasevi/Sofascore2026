@@ -7,6 +7,7 @@ final class MatchesViewController: UIViewController {
         static let headerHeight: CGFloat = 56
         static let rowHeight: CGFloat = 56
     }
+    private let viewModel = MatchesViewModel()
 
     typealias DataSource = UITableViewDiffableDataSource<MatchesSection, Event>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<MatchesSection, Event>
@@ -14,16 +15,32 @@ final class MatchesViewController: UIViewController {
     private lazy var headerView = HeaderView(onSettingsTapped: handleSettingsTapped)
     private lazy var sportSelectorView = SportSelectorView(onSportSelected: handleSportSelected)
     private let tableView = UITableView()
-    private var selectedSport: Sport = .football
     private var diffableDataSource: DataSource?
-    private var loadTask: Task<Void, Never>?
+    
+    private let onLogout: () -> Void
+
+    init(onLogout: @escaping () -> Void) {
+        self.onLogout = onLogout
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         configureDataSource()
-        loadEvents()
+        viewModel.onUpdate = { [weak self] groups in
+            self?.applySnapshot(with: groups)
+        }
+        viewModel.onError = { [weak self] in
+            self?.applySnapshot(with: [])
+            self?.showErrorAlert()
+        }
+        viewModel.loadEvents()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -35,6 +52,7 @@ final class MatchesViewController: UIViewController {
         addViews()
         styleViews()
         setupConstraints()
+        setupTableView()
         setupDelegates()
     }
 
@@ -48,6 +66,9 @@ final class MatchesViewController: UIViewController {
         view.backgroundColor = AppColors.primary
         tableView.separatorStyle = .none
         tableView.backgroundColor = AppColors.surface
+    }
+    
+    private func setupTableView() {
         tableView.rowHeight = Constants.rowHeight
         tableView.sectionHeaderHeight = Constants.rowHeight
         tableView.register(MatchRowCell.self, forCellReuseIdentifier: MatchRowCell.identifier)
@@ -79,7 +100,7 @@ final class MatchesViewController: UIViewController {
     }
 
     private func handleSettingsTapped() {
-        let settingsVC = SettingsViewController()
+        let settingsVC = SettingsViewController(onLogout: onLogout)
         let navController = UINavigationController(rootViewController: settingsVC)
         navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)
@@ -96,25 +117,7 @@ final class MatchesViewController: UIViewController {
     }
 
     private func handleSportSelected(_ sport: Sport) {
-        selectedSport = sport
-        loadEvents()
-    }
-
-
-    private func loadEvents() {
-        loadTask?.cancel()
-        loadTask = Task { @MainActor [weak self] in
-            guard let self else { return }
-            do {
-                let events = try await APIClient.shared.fetchEvents(for: selectedSport.slug)
-                try Task.checkCancellation()
-                applySnapshot(with: events)
-            } catch is CancellationError {
-                return
-            } catch {
-                applySnapshot(with: [])
-            }
-        }
+        viewModel.selectSport(sport)
     }
 
     private func configureDataSource() {
@@ -134,57 +137,48 @@ final class MatchesViewController: UIViewController {
         }
     }
 
-    private func applySnapshot(with events: [Event]) {
-        let eventsByLeague = Dictionary(grouping: events, by: { $0.league.id })
-
-        var seenLeagueIds = Set<Int>()
-        var orderedLeagues: [League] = []
-        for event in events where seenLeagueIds.insert(event.league.id).inserted {
-            orderedLeagues.append(event.league)
-        }
-
+    private func applySnapshot(with groups: [LeagueGroup]) {
         var snapshot = Snapshot()
-        for league in orderedLeagues {
-            let section = MatchesSection(league: league)
-            snapshot.appendSections([section])
-            snapshot.appendItems(eventsByLeague[league.id] ?? [], toSection: section)
+        for group in groups {
+            snapshot.appendSections([group.section])
+            snapshot.appendItems(group.events, toSection: group.section)
         }
-
         diffableDataSource?.apply(snapshot, animatingDifferences: true)
     }
 }
 
 // MARK: - UITableViewDelegate
-extension MatchesViewController: UITableViewDelegate {
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let header = tableView.dequeueReusableHeaderFooterView(
-            withIdentifier: LeagueHeaderView.identifier
-        ) as? LeagueHeaderView else { return nil }
-
-        guard let sectionIdentifier = diffableDataSource?.snapshot().sectionIdentifiers[section] else { return nil }
-
-        let viewModel = LeagueHeaderViewModel(
-            countryName: sectionIdentifier.countryName,
-            leagueName: sectionIdentifier.leagueName,
-            logoUrl: sectionIdentifier.logoUrl
-        )
-        header.configure(with: viewModel)
-        viewModel.fetchImage { [weak header] in
-            guard let header else { return }
-            header.updateLogoIfStillRelevant(for: viewModel)
+    extension MatchesViewController: UITableViewDelegate {
+        
+        func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+            guard let header = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: LeagueHeaderView.identifier
+            ) as? LeagueHeaderView else { return nil }
+            
+            guard let sectionIdentifier = diffableDataSource?.snapshot().sectionIdentifiers[section] else { return nil }
+            
+            let viewModel = LeagueHeaderViewModel(
+                countryName: sectionIdentifier.countryName,
+                leagueName: sectionIdentifier.leagueName,
+                logoUrl: sectionIdentifier.logoUrl
+            )
+            header.configure(with: viewModel)
+            viewModel.fetchImage { [weak header] in
+                guard let header else { return }
+                header.updateLogoIfStillRelevant(for: viewModel)
+            }
+            
+            header.showSeparator(section != 0)
+            
+            return header
         }
-
-        header.showSeparator(section != 0)
-
-        return header
+        
+        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            tableView.deselectRow(at: indexPath, animated: true)
+            guard let event = diffableDataSource?.itemIdentifier(for: indexPath) else { return }
+            let viewModel = EventDetailsViewModel(event: event, sport: self.viewModel.selectedSport)
+            let eventDetailsVC = EventDetailsViewController(viewModel: viewModel)
+            navigationController?.pushViewController(eventDetailsVC, animated: true)
+        }
     }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        guard let event = diffableDataSource?.itemIdentifier(for: indexPath) else { return }
-        let viewModel = EventDetailsViewModel(event: event, sport: selectedSport)
-        let eventDetailsVC = EventDetailsViewController(viewModel: viewModel)
-        navigationController?.pushViewController(eventDetailsVC, animated: true)
-    }
-}
+ 

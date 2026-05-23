@@ -14,6 +14,19 @@
 		73078BD66C7849F99363500B /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9885914B33F40ACAB4D678E /* HeaderView.swift */; };
 		949EE9D5F0F0415BB35D6D46 /* League.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED969C29F9546BBAF12DDA1 /* League.swift */; };
 		A562AB698FA44D328D491028 /* EventDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2658214CF6E847F59DAEF2F3 /* EventDetailsViewController.swift */; };
+		B275924F2FC07D30001C3938 /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B275924E2FC07D25001C3938 /* LoginResponse.swift */; };
+		B27592512FC07D41001C3938 /* LoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27592502FC07D3D001C3938 /* LoginRequest.swift */; };
+		B27592532FC08049001C3938 /* TokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27592522FC0803D001C3938 /* TokenStore.swift */; };
+		B27592552FC08066001C3938 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27592542FC0805E001C3938 /* LoginViewController.swift */; };
+		B29BC5632FC0BE3C00D08E8E /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = B29BC5622FC0BE3C00D08E8E /* GRDB */; };
+		B29BC5652FC0BE6100D08E8E /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29BC5642FC0BE5600D08E8E /* DatabaseManager.swift */; };
+		B29BC5682FC0BEAA00D08E8E /* LeagueRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29BC5672FC0BEA100D08E8E /* LeagueRecord.swift */; };
+		B29BC56A2FC0BEF200D08E8E /* EventRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29BC5692FC0BEE700D08E8E /* EventRecord.swift */; };
+		B29BC56C2FC0BF2900D08E8E /* EventsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29BC56B2FC0BF2100D08E8E /* EventsRepository.swift */; };
+		B29BC56E2FC1CCF300D08E8E /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29BC56D2FC1CCEC00D08E8E /* KeychainStore.swift */; };
+		B29BC5702FC1CEFF00D08E8E /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29BC56F2FC1CEF700D08E8E /* LoginViewModel.swift */; };
+		B29BC5722FC1CFDC00D08E8E /* MatchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29BC5712FC1CFD400D08E8E /* MatchesViewModel.swift */; };
+		B29BC5742FC1D08E00D08E8E /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29BC5732FC1D08800D08E8E /* SettingsViewModel.swift */; };
 		B93595DB35C14C8A8B82F5B8 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C184A2BB04FA1A577EDDC /* Event.swift */; };
 		C9F274CE43C54799A698475E /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676662B69F9A4D5586346F21 /* Country.swift */; };
 		EAEB7DE64472415C80B62C32 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = B9F2FF3102B6405C99600F40 /* Alamofire */; };
@@ -52,6 +65,18 @@
 		716512E8B70B4FE39E55028F /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		7F05013A5947473B9C0511F9 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		930C184A2BB04FA1A577EDDC /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		B275924E2FC07D25001C3938 /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
+		B27592502FC07D3D001C3938 /* LoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequest.swift; sourceTree = "<group>"; };
+		B27592522FC0803D001C3938 /* TokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStore.swift; sourceTree = "<group>"; };
+		B27592542FC0805E001C3938 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		B29BC5642FC0BE5600D08E8E /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		B29BC5672FC0BEA100D08E8E /* LeagueRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeagueRecord.swift; sourceTree = "<group>"; };
+		B29BC5692FC0BEE700D08E8E /* EventRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRecord.swift; sourceTree = "<group>"; };
+		B29BC56B2FC0BF2100D08E8E /* EventsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsRepository.swift; sourceTree = "<group>"; };
+		B29BC56D2FC1CCEC00D08E8E /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
+		B29BC56F2FC1CEF700D08E8E /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		B29BC5712FC1CFD400D08E8E /* MatchesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesViewModel.swift; sourceTree = "<group>"; };
+		B29BC5732FC1D08800D08E8E /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		B9885914B33F40ACAB4D678E /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		EF189F662F6047F5008CA689 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EF189F672F6047F5008CA689 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -85,6 +110,7 @@
 				EF944EC42F6043EC00EA1C14 /* SofaAcademic in Frameworks */,
 				EF944EC12F5B0A8000EA1C14 /* SnapKit in Frameworks */,
 				EAEB7DE64472415C80B62C32 /* Alamofire in Frameworks */,
+				B29BC5632FC0BE3C00D08E8E /* GRDB in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,6 +123,15 @@
 				716512E8B70B4FE39E55028F /* APIClient.swift */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		B29BC5662FC0BE8B00D08E8E /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				B29BC5692FC0BEE700D08E8E /* EventRecord.swift */,
+				B29BC5672FC0BEA100D08E8E /* LeagueRecord.swift */,
+			);
+			path = Database;
 			sourceTree = "<group>";
 		};
 		EF189F6F2F6047F5008CA689 /* Sofascore2026 */ = {
@@ -132,6 +167,9 @@
 		EF189F782F604812008CA689 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				B29BC5732FC1D08800D08E8E /* SettingsViewModel.swift */,
+				B29BC5712FC1CFD400D08E8E /* MatchesViewModel.swift */,
+				B29BC56F2FC1CEF700D08E8E /* LoginViewModel.swift */,
 				EF189F832F604934008CA689 /* MatchRowViewModel.swift */,
 				158547F6E08F494EB37500CB /* EventDetailsViewModel.swift */,
 				EF189F812F60491C008CA689 /* LeagueHeaderViewModel.swift */,
@@ -155,6 +193,7 @@
 		EF189F7A2F604821008CA689 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				B27592542FC0805E001C3938 /* LoginViewController.swift */,
 				EF189F892F6055E6008CA689 /* MatchesViewController.swift */,
 				1129F0AF616A49428DB981D2 /* SettingsViewController.swift */,
 				2658214CF6E847F59DAEF2F3 /* EventDetailsViewController.swift */,
@@ -173,6 +212,9 @@
 		EF7765732F698A59006807A6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B29BC5662FC0BE8B00D08E8E /* Database */,
+				B27592502FC07D3D001C3938 /* LoginRequest.swift */,
+				B275924E2FC07D25001C3938 /* LoginResponse.swift */,
 				28A01B22702B4892AD2D3A63 /* EventStatus.swift */,
 				676662B69F9A4D5586346F21 /* Country.swift */,
 				7F05013A5947473B9C0511F9 /* Team.swift */,
@@ -212,6 +254,10 @@
 		EFCF777D2F6B100400D2DB6B /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				B29BC56D2FC1CCEC00D08E8E /* KeychainStore.swift */,
+				B29BC56B2FC0BF2100D08E8E /* EventsRepository.swift */,
+				B29BC5642FC0BE5600D08E8E /* DatabaseManager.swift */,
+				B27592522FC0803D001C3938 /* TokenStore.swift */,
 				EFCF777E2F6B101000D2DB6B /* ImageService.swift */,
 			);
 			path = Services;
@@ -237,6 +283,7 @@
 				EF944EC02F5B0A8000EA1C14 /* SnapKit */,
 				EF944EC32F6043EC00EA1C14 /* SofaAcademic */,
 				B9F2FF3102B6405C99600F40 /* Alamofire */,
+				B29BC5622FC0BE3C00D08E8E /* GRDB */,
 			);
 			productName = Sofascore2026;
 			productReference = EF944EA22F578DDF00EA1C14 /* Sofascore2026.app */;
@@ -270,6 +317,7 @@
 				EF944EBF2F5B0A8000EA1C14 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				EF944EC22F6043EC00EA1C14 /* XCRemoteSwiftPackageReference "academy" */,
 				5E867C36BF1849CDAC1BC501 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				B29BC5612FC0BE3C00D08E8E /* XCRemoteSwiftPackageReference "GRDB.swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EF944EA32F578DDF00EA1C14 /* Products */;
@@ -301,31 +349,43 @@
 				EF189F822F604925008CA689 /* LeagueHeaderViewModel.swift in Sources */,
 				EF189F882F604983008CA689 /* MatchRowView.swift in Sources */,
 				EF189F742F6047F5008CA689 /* SceneDelegate.swift in Sources */,
+				B29BC5652FC0BE6100D08E8E /* DatabaseManager.swift in Sources */,
+				B29BC56C2FC0BF2900D08E8E /* EventsRepository.swift in Sources */,
 				EF189F862F60496D008CA689 /* LeagueHeaderView.swift in Sources */,
 				EF189F7E2F6048BD008CA689 /* Fonts.swift in Sources */,
+				B29BC5702FC1CEFF00D08E8E /* LoginViewModel.swift in Sources */,
 				EF7765792F698D83006807A6 /* SportSelectorView.swift in Sources */,
 				EF7765772F698D39006807A6 /* SportSelectorItemView.swift in Sources */,
+				B29BC56A2FC0BEF200D08E8E /* EventRecord.swift in Sources */,
+				B29BC5742FC1D08E00D08E8E /* SettingsViewModel.swift in Sources */,
 				EFBC72662F7A895D006E602A /* MatchResult.swift in Sources */,
 				EF8760EE2F6454740076D62D /* UIColor+.swift in Sources */,
 				EFCF77852F6B1D0A00D2DB6B /* MatchRowCell.swift in Sources */,
 				73078BD66C7849F99363500B /* HeaderView.swift in Sources */,
 				3259998CF68E499BBD7161A9 /* SettingsViewController.swift in Sources */,
 				F0B08AC6FE944FB48C819D30 /* EventDetailsViewModel.swift in Sources */,
+				B275924F2FC07D30001C3938 /* LoginResponse.swift in Sources */,
+				B29BC5682FC0BEAA00D08E8E /* LeagueRecord.swift in Sources */,
 				A562AB698FA44D328D491028 /* EventDetailsViewController.swift in Sources */,
 				EF189F8A2F6055ED008CA689 /* MatchesViewController.swift in Sources */,
 				EF7765722F697FAD006807A6 /* DateFormattersHelper.swift in Sources */,
 				EFCF777F2F6B101100D2DB6B /* ImageService.swift in Sources */,
 				EF189F842F60493B008CA689 /* MatchRowViewModel.swift in Sources */,
 				EF189F7C2F604841008CA689 /* Colors.swift in Sources */,
+				B29BC5722FC1CFDC00D08E8E /* MatchesViewModel.swift in Sources */,
+				B27592552FC08066001C3938 /* LoginViewController.swift in Sources */,
 				EF189F752F6047F5008CA689 /* AppDelegate.swift in Sources */,
 				EF189F802F6048E0008CA689 /* Strings.swift in Sources */,
 				41655CB31FF24AA98BE80DE7 /* EventStatus.swift in Sources */,
 				C9F274CE43C54799A698475E /* Country.swift in Sources */,
+				B27592532FC08049001C3938 /* TokenStore.swift in Sources */,
 				6B98ABA5B04C4FF08526CFC2 /* Team.swift in Sources */,
 				949EE9D5F0F0415BB35D6D46 /* League.swift in Sources */,
+				B29BC56E2FC1CCF300D08E8E /* KeychainStore.swift in Sources */,
 				B93595DB35C14C8A8B82F5B8 /* Event.swift in Sources */,
 				48F243B7584748328DEF7796 /* APIClient.swift in Sources */,
 				EFCF77812F6B1BCA00D2DB6B /* MatchesSection.swift in Sources */,
+				B27592512FC07D41001C3938 /* LoginRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -547,6 +607,14 @@
 				minimumVersion = 5.9.0;
 			};
 		};
+		B29BC5612FC0BE3C00D08E8E /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/groue/GRDB.swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		EF944EBF2F5B0A8000EA1C14 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -566,6 +634,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B29BC5622FC0BE3C00D08E8E /* GRDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B29BC5612FC0BE3C00D08E8E /* XCRemoteSwiftPackageReference "GRDB.swift" */;
+			productName = GRDB;
+		};
 		B9F2FF3102B6405C99600F40 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5E867C36BF1849CDAC1BC501 /* XCRemoteSwiftPackageReference "Alamofire" */;

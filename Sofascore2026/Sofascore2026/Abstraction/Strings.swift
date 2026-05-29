@@ -26,4 +26,13 @@ enum AppStrings {
     static let errorTitle = "Error"
     static let errorMessage = "Could not load matches. Check your connection and try again."
     static let ok = "OK"
+    static let usernamePlaceholder = "Username"
+    static let passwordPlaceholder = "Password"
+    static let loginButton = "Log in"
+    static let logoutButton = "Log out"
+    static let loginFailed = "Login failed. Check your credentials."
+    static let loginEmptyFields = "Please enter username and password."
+    static let loggedInAs = "Logged in as"
+    static let eventsCount = "Events in DB"
+    static let leaguesCount = "Leagues in DB"
 }

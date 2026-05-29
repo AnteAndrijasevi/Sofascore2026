@@ -1,5 +1,4 @@
 import Foundation
-@preconcurrency import Alamofire
 
 final class APIClient {
 
@@ -8,6 +7,7 @@ final class APIClient {
     private init() {}
 
     private static let decoder = JSONDecoder()
+    private static let encoder = JSONEncoder()
 
     private enum Constants {
         static let baseURL = "https://sofascore-ios-academy-be-c63faa1a2212.herokuapp.com"
@@ -16,7 +16,7 @@ final class APIClient {
     enum APIError: Error {
         case invalidURL
         case networkError(Error)
-        case decodingFailed
+        case decodingFailed(Error)
         case httpError(statusCode: Int)
     }
 
@@ -27,48 +27,19 @@ final class APIClient {
         return components?.url
     }
 
-    func fetchEvents(
-        for sportSlug: String,
-        completion: @escaping (Result<[Event], APIError>) -> Void
-    ) {
-        guard let url = makeEventsURL(sportSlug: sportSlug) else {
-            DispatchQueue.main.async { completion(.failure(.invalidURL)) }
-            return
-        }
-
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error {
-                DispatchQueue.main.async { completion(.failure(.networkError(error))) }
-                return
-            }
-
-            if let httpResponse = response as? HTTPURLResponse, !(200..<300).contains(httpResponse.statusCode) {
-                DispatchQueue.main.async { completion(.failure(.httpError(statusCode: httpResponse.statusCode))) }
-                return
-            }
-
-            guard let data else {
-                DispatchQueue.main.async { completion(.failure(.networkError(URLError(.badServerResponse)))) }
-                return
-            }
-
-            do {
-                let events = try Self.decoder.decode([Event].self, from: data)
-                DispatchQueue.main.async { completion(.success(events)) }
-            } catch {
-                DispatchQueue.main.async { completion(.failure(.decodingFailed)) }
-            }
-        }.resume()
-    }
-
     func fetchEvents(for sportSlug: String) async throws -> [Event] {
         guard let url = makeEventsURL(sportSlug: sportSlug) else {
             throw APIError.invalidURL
         }
 
+        var request = URLRequest(url: url)
+        if let token = TokenStore.shared.token {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+
         let data: Data
         do {
-            let (responseData, response) = try await URLSession.shared.data(from: url)
+            let (responseData, response) = try await URLSession.shared.data(for: request)
             if let httpResponse = response as? HTTPURLResponse, !(200..<300).contains(httpResponse.statusCode) {
                 throw APIError.httpError(statusCode: httpResponse.statusCode)
             }
@@ -78,32 +49,51 @@ final class APIClient {
         } catch {
             throw APIError.networkError(error)
         }
-
-        guard let events = try? Self.decoder.decode([Event].self, from: data) else {
-            throw APIError.decodingFailed
+        do {
+            return try Self.decoder.decode([Event].self, from: data)
+        } catch {
+            throw APIError.decodingFailed(error)
         }
-
-        return events
     }
 
-    func fetchEventsWithAlamofire(for sportSlug: String) async throws -> [Event] {
-        guard let url = makeEventsURL(sportSlug: sportSlug) else {
+    private func makeURL(path: String, queryItems: [URLQueryItem]? = nil) -> URL? {
+        var components = URLComponents(string: Constants.baseURL)
+        components?.path = path
+        components?.queryItems = queryItems
+        return components?.url
+    }
+
+    func login(username: String, password: String) async throws -> LoginResponse {
+        guard let url = makeURL(path: "/login") else {
             throw APIError.invalidURL
         }
 
-        let response = await AF.request(url)
-            .serializingDecodable([Event].self)
-            .response
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try Self.encoder.encode(
+            LoginRequest(username: username, password: password)
+        )
 
-        switch response.result {
-        case .success(let events):
-            return events
-        case .failure(let afError):
-            if afError.isResponseSerializationError {
-                throw APIError.decodingFailed
-            } else {
-                throw APIError.networkError(afError)
+        let data: Data
+        do {
+            let (responseData, response) = try await URLSession.shared.data(for: request)
+            if let http = response as? HTTPURLResponse, !(200..<300).contains(http.statusCode) {
+                throw APIError.httpError(statusCode: http.statusCode)
             }
+            data = responseData
+        } catch let error as APIError {
+            throw error
+        } catch {
+            throw APIError.networkError(error)
+        }
+
+        do {
+            return try Self.decoder.decode(LoginResponse.self, from: data)
+        } catch {
+            throw APIError.decodingFailed(error)
         }
     }
+    
+    
 }

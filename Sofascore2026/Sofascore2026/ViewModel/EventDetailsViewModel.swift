@@ -17,6 +17,8 @@ final class EventDetailsViewModel {
     let leagueLogoUrl: String?
     let result: MatchResult?
     let sportName: String
+    let eventId: Int
+    let sport: Sport
 
     var homeTeamLogo: UIImage?
     var awayTeamLogo: UIImage?
@@ -52,6 +54,8 @@ final class EventDetailsViewModel {
     }
 
     init(event: Event, sport: Sport) {
+        self.eventId = event.id
+        self.sport = sport
         homeTeamName = event.homeTeam.name
         awayTeamName = event.awayTeam.name
         homeTeamLogoUrl = event.homeTeam.logoUrl

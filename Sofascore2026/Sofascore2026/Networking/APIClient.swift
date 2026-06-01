@@ -55,6 +55,40 @@ final class APIClient {
             throw APIError.decodingFailed(error)
         }
     }
+    
+    private func makeIncidentsURL(eventId: Int) -> URL? {
+        makeURL(path: "/events/\(eventId)/incidents")
+    }
+
+    func fetchIncidents(eventId: Int) async throws -> [Incident] {
+        guard let url = makeIncidentsURL(eventId: eventId) else {
+            throw APIError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        if let token = TokenStore.shared.token {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+
+        let data: Data
+        do {
+            let (responseData, response) = try await URLSession.shared.data(for: request)
+            if let http = response as? HTTPURLResponse, !(200..<300).contains(http.statusCode) {
+                throw APIError.httpError(statusCode: http.statusCode)
+            }
+            data = responseData
+        } catch let error as APIError {
+            throw error
+        } catch {
+            throw APIError.networkError(error)
+        }
+
+        do {
+            return try Self.decoder.decode([Incident].self, from: data)
+        } catch {
+            throw APIError.decodingFailed(error)
+        }
+    }
 
     private func makeURL(path: String, queryItems: [URLQueryItem]? = nil) -> URL? {
         var components = URLComponents(string: Constants.baseURL)

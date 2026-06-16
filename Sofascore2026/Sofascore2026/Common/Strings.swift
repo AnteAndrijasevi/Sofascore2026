@@ -79,5 +79,26 @@ enum AppStrings {
     static func quarter(_ number: Int) -> String { "Q\(number)" }
     
     static func round(_ number: Int) -> String { "Round \(number)" }
+    
+    // MARK: - Team of the Season
+    static let totsTitle = "Team of the Season"
+    static let totsMockBadge = "Mock preview · no real data"
+    static let totsClearAll = "Clear all"
+    static let totsSubmit = "Submit"
+    static let totsRemove = "Remove"
+    static let lineGoalkeepers = "Goalkeepers"
+    static let lineDefenders = "Defenders"
+    static let lineMidfielders = "Midfielders"
+    static let lineAttackers = "Attackers"
+    static let totsCommunityXI = "Community XI"
+    static let totsBackToMyTeam = "Back to my team"
+    static let totsVotesLine = "128,402 votes"
+    static let totsDaysLeft = "2 days left to vote"
+    static let totsTrophySymbol = "trophy.fill"
+    static let totsBackToHome = "Back to home screen"
+    static let totsShareIntro = "My Community Team of the Season"
+
+    static func totsSelected(_ count: Int) -> String { "\(count) / 11 selected" }
+    static func totsRemoved(_ count: Int) -> String { "\(count) removed to fit the new formation" }
     }
 

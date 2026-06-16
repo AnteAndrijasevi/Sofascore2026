@@ -12,9 +12,10 @@ final class MatchesViewController: UIViewController {
     private typealias DataSource = UITableViewDiffableDataSource<MatchesSection, Event>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<MatchesSection, Event>
 
-    private lazy var headerView = HeaderView(onSettingsTapped: { [weak self] in
-        self?.handleSettingsTapped()
-    })
+    private lazy var headerView = HeaderView(
+        onSettingsTapped: { [weak self] in self?.handleSettingsTapped() },
+        onTrophyTapped: { [weak self] in self?.handleTrophyTapped() }
+    )
     
     private lazy var sportSelectorView = SportSelectorView(onSportSelected: { [weak self] sport in
         self?.handleSportSelected(sport)
@@ -112,6 +113,11 @@ final class MatchesViewController: UIViewController {
         let navController = UINavigationController(rootViewController: settingsVC)
         navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)
+    }
+    
+    private func handleTrophyTapped() {
+        let viewController = TeamOfTheSeasonViewController()
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     private func showErrorAlert() {

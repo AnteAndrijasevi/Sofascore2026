@@ -9,12 +9,14 @@ final class HeaderView: UIView {
     }
 
     private let onSettingsTapped: () -> Void
-    private let titleImageView  = UIImageView(named: AppStrings.icTitle)
-    private let trophyImageView = UIImageView(named: AppStrings.icTrophy)
+    private let onTrophyTapped: () -> Void
+    private let titleImageView = UIImageView(named: AppStrings.icTitle)
+    private let trophyButton = UIButton(type: .system)
     private let settingsButton = UIButton(type: .system)
 
-    init(onSettingsTapped: @escaping () -> Void) {
+    init(onSettingsTapped: @escaping () -> Void, onTrophyTapped: @escaping () -> Void) {
         self.onSettingsTapped = onSettingsTapped
+        self.onTrophyTapped = onTrophyTapped
         super.init(frame: .zero)
         setupUI()
     }
@@ -32,7 +34,7 @@ final class HeaderView: UIView {
 
     private func addViews() {
         addSubview(titleImageView)
-        addSubview(trophyImageView)
+        addSubview(trophyButton)
         addSubview(settingsButton)
     }
 
@@ -41,6 +43,10 @@ final class HeaderView: UIView {
 
         settingsButton.setImage(
             UIImage(named: AppStrings.icSettings)?.withRenderingMode(.alwaysOriginal),
+            for: .normal
+        )
+        trophyButton.setImage(
+            UIImage(named: AppStrings.icTrophy)?.withRenderingMode(.alwaysOriginal),
             for: .normal
         )
     }
@@ -58,7 +64,7 @@ final class HeaderView: UIView {
             $0.size.equalTo(Constants.iconSize)
         }
 
-        trophyImageView.snp.makeConstraints {
+        trophyButton.snp.makeConstraints {
             $0.trailing.equalTo(settingsButton.snp.leading).offset(-Constants.horizontalPadding)
             $0.centerY.equalToSuperview()
             $0.size.equalTo(Constants.iconSize)
@@ -67,9 +73,14 @@ final class HeaderView: UIView {
 
     private func setupActions() {
         settingsButton.addTarget(self, action: #selector(settingsTapped), for: .touchUpInside)
+        trophyButton.addTarget(self, action: #selector(trophyTapped), for: .touchUpInside)
     }
 
     @objc private func settingsTapped() {
         onSettingsTapped()
+    }
+
+    @objc private func trophyTapped() {
+        onTrophyTapped()
     }
 }

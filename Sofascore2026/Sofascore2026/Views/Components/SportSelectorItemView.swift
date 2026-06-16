@@ -1,0 +1,79 @@
+import UIKit
+import SnapKit
+
+final class SportSelectorItemView: UIButton {
+
+    private enum Constants {
+        static let stackVerticalPadding: CGFloat = 8
+        static let selectorBarHeight: CGFloat = 4
+    }
+
+    private let iconImageView = UIImageView()
+    private let sportTitleLabel = UILabel()
+    private let selectorBar = UIView()
+    private let stackView = UIStackView()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupUI() {
+        addViews()
+        styleViews()
+        setupConstraints()
+    }
+
+    private func addViews() {
+        addSubview(stackView)
+        addSubview(selectorBar)
+        stackView.addArrangedSubview(iconImageView)
+        stackView.addArrangedSubview(sportTitleLabel)
+    }
+
+    private func styleViews() {
+        sportTitleLabel.font = AppFonts.headline
+        sportTitleLabel.textColor = AppColors.onPrimary
+        sportTitleLabel.textAlignment = .center
+
+        iconImageView.contentMode = .scaleAspectFit
+        iconImageView.tintColor = AppColors.onPrimary
+
+        stackView.axis = .vertical
+        stackView.spacing = 4
+        stackView.alignment = .center
+
+        selectorBar.backgroundColor = AppColors.clear
+        selectorBar.layer.cornerRadius = Constants.selectorBarHeight / 2
+        stackView.isUserInteractionEnabled = false
+        selectorBar.isUserInteractionEnabled = false
+    }
+
+    private func setupConstraints() {
+        stackView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(Constants.stackVerticalPadding)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(selectorBar.snp.top).offset(-Constants.stackVerticalPadding)
+        }
+
+        iconImageView.snp.makeConstraints {
+            $0.size.equalTo(16)
+        }
+
+        selectorBar.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(2)
+            $0.height.equalTo(Constants.selectorBarHeight)
+        }
+    }
+
+    func configure(with sport: Sport, isSelected: Bool) {
+        sportTitleLabel.text = sport.title
+        iconImageView.image = UIImage(named: sport.iconName)
+        selectorBar.backgroundColor = isSelected ? AppColors.onPrimary : AppColors.clear
+    }
+}
